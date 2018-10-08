@@ -1,0 +1,24 @@
+<template>
+  <div>指挥调度</div>
+</template>
+
+<script>
+export default {
+  created() {
+  },
+  data() {
+    return {
+    }
+  },
+  watch: {
+ 
+  },
+  methods: {
+  
+  }
+}
+</script>
+
+<style rel="stylesheet/scss" lang="scss" scoped>
+
+</style>
