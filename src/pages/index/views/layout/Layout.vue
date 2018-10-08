@@ -38,7 +38,7 @@ export default {
                 withoutAnimation: this.sidebar.withoutAnimation,
                 mobile: this.device === "mobile"
             };
-          
+
         }
     },
     methods: {
@@ -50,7 +50,7 @@ export default {
 </script>
 
 <style rel="stylesheet/scss" lang="scss" scoped>
-@import "src/pages/index/styles/mixin.scss";
+  @import "src/pages/index/styles/mixin.scss";
 .app-wrapper {
     @include clearfix;
     position: relative;

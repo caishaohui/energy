@@ -27,7 +27,7 @@ export default {
   },
   methods: {
     getBreadcrumb() {
-      //matched 一个数组，包含当前路由的所有嵌套路径片段的路由记录 
+      //matched 一个数组，包含当前路由的所有嵌套路径片段的路由记录
       let matched = this.$route.matched.filter(item => item.name)
       const first = matched[0]
       this.levelList = matched
