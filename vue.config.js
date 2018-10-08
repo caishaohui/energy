@@ -78,7 +78,7 @@ module.exports = {
         hotOnly: false,
         open: true,
         // 查阅 https://github.com/vuejs/vue-docs-zh-cn/blob/master/vue-cli/cli-service.md#配置代理
-        proxy: 'http://localhost:3001', // string | Object
+        // proxy: 'http://localhost:3001', // string | Object
         before: app => {}
     },
     pages: {

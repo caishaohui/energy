@@ -5,7 +5,7 @@
         <el-menu-item :index="resolvePath(onlyOneChild.path)" :class="{'submenu-title-noDropdown':!isNest}">
           <!-- <svg-icon v-if="onlyOneChild.meta&&onlyOneChild.meta.icon" :icon-class="onlyOneChild.meta.icon"></svg-icon> -->
           <i class="fontcontainer">
-              <span class="iconfont" v-if="onlyOneChild.meta&&onlyOneChild.meta.icon" :class="onlyOneChild.meta.icon"></span>
+             <img class="iconfont" :src="onlyOneChild.meta.icon"  v-if="onlyOneChild.meta&&onlyOneChild.meta.icon" alt="">
           </i>
           <span v-if="onlyOneChild.meta&&onlyOneChild.meta.title" slot="title">{{onlyOneChild.meta.title}}</span>
         </el-menu-item>
@@ -15,7 +15,7 @@
         <template slot="title">
           <!-- <svg-icon v-if="item.meta&&item.meta.icon" :icon-class="item.meta.icon"></svg-icon> -->
           <i class="fontcontainer">
-              <span class="iconfont" v-if="item.meta&&item.meta.icon" :class="item.meta.icon"></span>
+            <img class="iconfont" :src="item.meta.icon"  v-if="item.meta&&item.meta.icon" alt="">
           </i>
           <span v-if="item.meta&&item.meta.title" slot="title">{{item.meta.title}}</span>
         </template>
@@ -23,11 +23,11 @@
         <template v-for="child in item.children" v-if="!child.hidden">
           <sidebar-item :is-nest="true" class="nest-menu" v-if="child.children&&child.children.length>0" :item="child" :key="child.path" :base-path="resolvePath(child.path)"></sidebar-item>
 
-          <router-link v-else :to="resolvePath(child.path)" :key="child.name">
-            <el-menu-item :index="resolvePath(child.path)">
+          <router-link v-else :to="resolvePath(child.path)" :key="child.name"  active-class = "_active">
+            <el-menu-item :index="resolvePath(child.path)" >
               <!-- <svg-icon v-if="child.meta&&child.meta.icon" :icon-class="child.meta.icon"></svg-icon> -->
               <i class="fontcontainer">
-                 <span class="iconfont" v-if="child.meta&&child.meta.icon" :class="child.meta.icon"></span>
+                   <img class="iconfont" :src="child.meta.icon"   v-if="child.meta&&child.meta.icon" alt="">
               </i>
               <span v-if="child.meta&&child.meta.title" slot="title">{{child.meta.title}}</span>
             </el-menu-item>
@@ -92,5 +92,8 @@ export default {
 .fontcontainer{
     padding-right:10px;
 }
+ ._active{
+      background-color : red !important;
+   }
 </style>
 

@@ -91,6 +91,11 @@
             background-color: $menuHover !important;
         }
     }
+    .el-menu-item {
+        &:hover {
+            background-color: $menuHover !important;
+        }
+    }
     .el-menu--collapse .el-menu .el-submenu {
         min-width: 180px !important;
     }

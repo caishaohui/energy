@@ -6,9 +6,9 @@
       :show-timeout="200"
       :default-active="$route.path"
       :collapse="isCollapse"
-      background-color="#304156"
-      text-color="#bfcbd9"
-      active-text-color="#409EFF"
+      background-color="#393D49"
+      text-color="#b9bbbf"
+      active-text-color="#FFFFFF"
     >
         <img  class="pic-404__child left" :src="img_404_cloud" alt="404">
       <sidebar-item v-for="route in routes" :key="route.name" :item="route" :base-path="route.path"></sidebar-item>
