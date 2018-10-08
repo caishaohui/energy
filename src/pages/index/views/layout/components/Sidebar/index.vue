@@ -19,7 +19,7 @@
 <script>
 import { mapGetters } from 'vuex'
 import SidebarItem from './SidebarItem'
-import img_404_cloud from '@/pages/index/assets/404_images/404.png'
+import img_404_cloud from '@/assets/404_images/404.png'
 export default {
     data() {
     return {

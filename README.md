@@ -1,28 +1,28 @@
 # energy-cloud-web
 
-## Project setup
+## 下载包
 ```
 npm install
 ```
 
-### Compiles and hot-reloads for development
+### 运行项目
 ```
 npm run serve
 ```
 
-### Compiles and minifies for production
+### 打包项目
 ```
 npm run build
 ```
 
-### Run your tests
+### 测试项目
 ```
 npm run test
 ```
 
-### Lints and fixes files
+###测试项目
 ```
 npm run lint
 ```
-
+###下载项目地址
 git clone https://github.com/caishaohui/energy.git

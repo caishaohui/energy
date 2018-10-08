@@ -7,7 +7,7 @@ import "normalize.css/normalize.css";
 
 import ElementUI from "element-ui";
 import "element-ui/lib/theme-chalk/index.css";
-import "./assets/iconfont/iconfont.css"
+import "@/assets/iconfont/iconfont.css"
 import '@/pages/index/styles/index.scss' // global css
 
 import '@/pages/index/permission' // permission control
