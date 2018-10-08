@@ -24,3 +24,5 @@ npm run test
 ```
 npm run lint
 ```
+
+git clone https://github.com/caishaohui/energy.git
