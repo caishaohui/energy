@@ -10,7 +10,6 @@
           <span v-if="onlyOneChild.meta&&onlyOneChild.meta.title" slot="title">{{onlyOneChild.meta.title}}</span>
         </el-menu-item>
       </router-link>
-
       <el-submenu v-else :index="item.name||item.path">
         <template slot="title">
           <!-- <svg-icon v-if="item.meta&&item.meta.icon" :icon-class="item.meta.icon"></svg-icon> -->
@@ -34,7 +33,6 @@
           </router-link>
         </template>
       </el-submenu>
-
   </div>
 </template>
 
@@ -72,7 +70,7 @@ export default {
                     // temp set(will be used if only has one showing child )
                     this.onlyOneChild = item;
                     // console.log(item,777);
-                    
+
                     return true;
                 }
             });
