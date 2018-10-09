@@ -38,7 +38,6 @@
 
 <script>
 import path from "path";
-
 export default {
     name: "SidebarItem",
     props: {
@@ -85,7 +84,6 @@ export default {
     }
 };
 </script>
-
 <style scoped>
 .fontcontainer{
     padding-right:10px;
