@@ -52,13 +52,13 @@ export default {
 
 <style rel="stylesheet/scss" lang="scss" scoped>
 .navbar {
-  height: 50px;
-  line-height: 50px;
+  height: 64px;
+  line-height: 64px;
   border-radius: 0px !important;
   background-color: #23262E;
   .hamburger-container {
-    line-height: 58px;
-    height: 50px;
+    line-height: 72px;
+    height: 64px;
     float: left;
     padding: 0 10px;
   }
@@ -69,7 +69,7 @@ export default {
     color: red;
   }
   .avatar-container {
-    height: 50px;
+    height: 64px;
     display: inline-block;
     position: absolute;
     right: 35px;
