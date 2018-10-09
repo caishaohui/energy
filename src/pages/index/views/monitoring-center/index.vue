@@ -2,7 +2,6 @@
   <div class="app-container">
       <div class="customer-box">
       <el-tabs v-model="activeName" @tab-click="handleClick">
-
           <!--客户-->
           <el-tab-pane label="客户" name="first">
               <!--客户搜索-->
@@ -16,7 +15,6 @@
                   <el-tree :data="data" :props="defaultProps" @node-click="handleNodeClick"></el-tree>
               </div>
           </el-tab-pane>
-
           <!--电工-->
           <el-tab-pane label="电工" name="second">
               电工
@@ -26,14 +24,14 @@
      <!--<el-button @click="jump">跳转到客户页面</el-button>-->
       <div class="box-map">
           <div id="my-list" style="display: none"></div>
-          <div id="outer-box">
+          <!--<div id="outer-box">-->
               <div id="container">
               </div>
               <div id="panel">
                   <div id="intro">
                   </div>
               </div>
-          </div>
+          <!--</div>-->
       </div>
 
   </div>
@@ -48,7 +46,6 @@
 export default {
   data() {
     return {
-
         activeName: 'first',// 客户，电工分页
         input23:'',//客户搜索
         data: [],//客户，树形结构数据
@@ -102,13 +99,12 @@ export default {
 
       getCustomerData(){
           var _this = this;
-
           //创建地图
           var map = new AMap.Map('container', {
               zoom: 9,
-              mapStyle: 'amap://styles/whitesmoke', //设置地图的显示样式
-          });
 
+          });
+          map.setFitView();
           //关闭信息窗体
           function closeInfoWindow() {
               map.clearInfoWindow();
@@ -150,18 +146,19 @@ export default {
                       }
                       //返回一个新的Marker
                       return new AMap.Marker({
+
                           label: label,
                           title:data.id,
                           icon: new AMap.Icon({
                               size: new AMap.Size(40, 60),  //图标大小
                               image: _this.mapIcon,
-                              // imageOffset: new AMap.Pixel(0, -60)
+
                           })
                       });
                   },
                   //返回数据项对应的infoWindow
                   getInfoWindow: function(dataItem, context, recycledInfoWindow) {
-                      var tpl ="<div id='mapInfowindow' style='background:#314772'>" +
+                      var tpl ="<div id='mapInfowindow' style='background:#314772;height: 300px'>" +
                           "<div><%- dataItem.company %>：<%- dataItem.infoWinContent %><p>联系人：<%- dataItem.person %><%- dataItem.infoWinContent %></p><p>联系电话:<%- dataItem.phone %></p></div>"+
                           "<img src='"+_this.loadIcon+"' style='width: 20px;height: 20px'>"+
                           "<img src='"+_this.electricIcon+"' style='width: 20px;height: 20px'>"+
@@ -186,7 +183,7 @@ export default {
                       }
                       //返回一个新的InfoWindow
                       return new AMap.InfoWindow({
-                          offset: new AMap.Pixel(0, -23),
+                          offset: new AMap.Pixel(0, -30),
                           content:content
                       });
                   },
@@ -213,11 +210,14 @@ export default {
               });
               //监听选中改变
               markerList.on('selectedChanged', function(event, info) {
-                  console.log(event, info);
+                  // console.log(event, info);
+                  map.setCenter([info.selected.position.lng, info.selected.position.lat+0.05]);
+                  console.log(info.selected.position.lng);
+                  console.log(info.selected.position.lat)
               });
               //监听Marker和ListElement上的点击
               markerList.on('markerClick listElementClick', function(event, record) {
-                  console.log(event, record);
+                  // console.log(event, record);
               });
 
               //构建一个数据项数组，数据项本身没有格式要求，但需要支持getDataId和getPosition
@@ -284,14 +284,7 @@ export default {
 </script>
 <style rel="stylesheet/scss" lang="scss"  scoped>
     @import "../../styles/monitoring.scss";
-    #container{
-        width: 1200px;
-        height: 800px;
-        margin: 0px;
-        .amap-info-outer{
-            background: red;
-        }
-    }
+
 .line{
   text-align: center;
  }
