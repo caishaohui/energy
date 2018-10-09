@@ -91,6 +91,12 @@
             background-color: $menuHover !important;
         }
     }
+    //变绿
+    .menu-wrapper {
+        .el-menu-item.is-active {
+            background-color: $menuHover !important;
+        }
+    }
     .el-menu-item {
         &:hover {
             background-color: $menuHover !important;
