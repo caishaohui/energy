@@ -1,7 +1,7 @@
 <template>
   <el-menu class="navbar" mode="horizontal">
     <hamburger class="hamburger-container" :toggleClick="toggleSideBar" :isActive="sidebar.opened"></hamburger>
-    <breadcrumb></breadcrumb>
+    <Breadcrumb></Breadcrumb>
     <el-dropdown class="avatar-container" trigger="click">
       <div class="avatar-wrapper">
         <img class="user-avatar" :src="avatar+'?imageView2/1/w/80/h/80'">
@@ -23,13 +23,13 @@
 
 <script>
 import { mapGetters } from 'vuex'
-import Breadcrumb from '@/pages/index/components/Breadcrumb'
+import Breadcrumb from '@/pages/index/components/Breadcrumb/index.vue'
 import Hamburger from '@/pages/index/components/Hamburger'
 
 export default {
   components: {
     Breadcrumb,
-    Hamburger
+    Hamburger,
   },
   computed: {
     ...mapGetters([
@@ -55,7 +55,6 @@ export default {
   height: 64px;
   line-height: 64px;
   border-radius: 0px !important;
-  background-color: #23262E;
   .hamburger-container {
     line-height: 72px;
     height: 64px;

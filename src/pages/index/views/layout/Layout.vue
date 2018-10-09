@@ -70,4 +70,15 @@ export default {
     position: absolute;
     z-index: 999;
 }
+  .app-breadcrumb.el-breadcrumb {
+    display: inline-block;
+    font-size: 14px;
+    height: 64px;
+    line-height: 64px;
+    margin-left: 10px;
+    .no-redirect {
+      color: #97a8be;
+      cursor: text;
+    }
+  }
 </style>
