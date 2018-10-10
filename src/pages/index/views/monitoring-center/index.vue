@@ -22,18 +22,53 @@
       </el-tabs>
       </div>
      <!--<el-button @click="jump">跳转到客户页面</el-button>-->
-      <div class="box-map">
+      <div class="box_map">
+
+          <!--客户按钮-->
+          <div class="box_map_customer_list">客户列表 > ></div>
+
+          <!--实时总负荷，实时总电量-->
+          <div class="box_map_load_electric">
+              <div class="box_map_load_electric_load">
+                  <img :src="loadIcon" alt="">
+                  <span> 实时总负荷:132456 KVA</span>
+              </div>
+              <div class="box_map_load_electric_electric">
+                  <img :src="electricIcon" alt="">
+                  <span>实时总电量:132456 KWH</span>
+              </div>
+          </div>
           <div id="my-list" style="display: none"></div>
-          <!--<div id="outer-box">-->
               <div id="container">
+                  <div class="total_box">
+                     <div class="total_box_customer">
+                        <div>
+                            <span>客户总计</span>
+                            <span>111</span>
+                        </div>
+                         <div><img :src="mapCustomerIcon" alt=""></div>
+                     </div>
+                      <div class="total_box_customer">
+                          <div>
+                              <span>中心总计</span>
+                              <span>111</span>
+                          </div>
+                          <div><img :src="mapCenterIcon" alt=""></div>
+                      </div>
+                      <div class="total_box_customer">
+                          <div>
+                              <span>电工总计</span>
+                              <span>111</span>
+                          </div>
+                          <div><img :src="mapElectricianIcon" alt=""></div>
+                      </div>
+                  </div>
               </div>
               <div id="panel">
                   <div id="intro">
                   </div>
               </div>
-          <!--</div>-->
       </div>
-
   </div>
 </template>
 <script>
@@ -43,6 +78,9 @@
     import facilityIcon from  '@/assets/icon/mapFacility.svg'
     import loadIcon from  '@/assets/icon/mapLoad.png'
     import electricIcon from  '@/assets/icon/mapElectric.png'
+    import mapCenterIcon from '@/assets/icon/mapCenterIcon.png'
+    import mapElectricianIcon from '@/assets/icon/mapElectricianIcon.png'
+    import mapCustomerIcon from '@/assets/icon/mapCustomerIcon.png'
 export default {
   data() {
     return {
@@ -61,6 +99,10 @@ export default {
         facilityIcon,
         loadIcon,
         electricIcon,
+        mapCenterIcon,
+        mapElectricianIcon,
+        mapCustomerIcon
+
     }
   },
   methods: {
@@ -268,12 +310,10 @@ export default {
                   }
                   ]
               }];
-
               _this.data = CustomerData;
               _this.mapData = data;
               //展示该数据
               markerList.render(data);
-
           });
       }
   },
