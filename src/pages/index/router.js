@@ -62,7 +62,7 @@ export const constantRouterMap = [{
     {
         path: '/system-settings',
         component: Layout,
-        redirect: '/system-settings/center-mag/index',
+        redirect: '/system-settings/center-mag',
         name: 'system-settings',
         meta: {
             title: '系统设置',
@@ -70,6 +70,7 @@ export const constantRouterMap = [{
         },
         children: [{
                 path: 'center-mag',
+                name: '中心管理',
                 component: () =>
                     import ('@/pages/index/views/system-settings/center-mag/index'),
                 meta: { title: '中心管理' }
@@ -120,12 +121,14 @@ export const constantRouterMap = [{
             },
             {
                 path: 'electrical-mag',
+                name: '电工管理',
                 component: () =>
                     import ('@/pages/index/views/system-settings/electrical-mag/index'),
                 meta: { title: '电工管理' }
             },
             {
                 path: 'OPS-mag',
+                name: '运维管理',
                 component: () =>
                     import ('@/pages/index/views/system-settings/OPS-mag/index'),
                 meta: { title: '运维管理' }

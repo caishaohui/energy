@@ -31,6 +31,8 @@ export default {
       let matched = this.$route.matched.filter(item => item.name)
       const first = matched[0]
       this.levelList = matched
+      console.log('111',this.levelList);
+      
     }
   }
 }

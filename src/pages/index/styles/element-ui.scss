@@ -1,64 +1,74 @@
  //to reset element-ui default css
-.el-upload {
-  input[type="file"] {
-    display: none !important;
-  }
-}
-
-.el-upload__input {
-  display: none;
-}
-
-//暂时性解决diolag 问题 https://github.com/ElemeFE/element/issues/2461
-.el-dialog {
-  transform: none;
-  left: 0;
-  position: relative;
-  margin: 0 auto;
-}
-
-//element ui upload
-.upload-container {
-  .el-upload {
-    width: 100%;
-    .el-upload-dragger {
-      width: 100%;
-      height: 200px;
-    }
-  }
-}
-
- .customer-box{
-   .el-input__inner{
-     height: 32px;
-     line-height: 32px;
-
-   }
-   .el-input__icon{
-     line-height: 32px;
-   }
-   .el-tree-node__label{
-     font-size: 14px;
-   }
-   .el-tree-node__children{
-     .is-current{
-       color: #009688;
-       //background: red;
+ .el-upload {
+     input[type="file"] {
+         display: none !important;
      }
-     .el-tree-node__content{
-
-     }
-     .is-focusable{
-       //background: red;
-     }
-     .el-tree-node {
-       //background: red;
-     }
-     .is-current{
-       //background: #009688;
-     }
-     //is-focusable
-     //is-current is-focusable
-   }
  }
-
+ 
+ .el-upload__input {
+     display: none;
+ }
+ 
+ //暂时性解决diolag 问题 https://github.com/ElemeFE/element/issues/2461
+ .el-dialog {
+     transform: none;
+     left: 0;
+     position: relative;
+     margin: 0 auto;
+ }
+ 
+ //element ui upload
+ .upload-container {
+     .el-upload {
+         width: 100%;
+         .el-upload-dragger {
+             width: 100%;
+             height: 200px;
+         }
+     }
+ }
+ 
+ .customer-box {
+     .el-input__inner {
+         height: 32px;
+         line-height: 32px;
+     }
+     .el-input__icon {
+         line-height: 32px;
+     }
+     .el-tree-node__label {
+         font-size: 14px;
+     }
+     .el-tree-node__children {
+         .is-current {
+             color: #009688;
+             //background: red;
+         }
+         .el-tree-node__content {}
+         .is-focusable {
+             //background: red;
+         }
+         .el-tree-node {
+             //background: red;
+         }
+         .is-current {
+             //background: #009688;
+         }
+         //is-focusable
+         //is-current is-focusable
+     }
+ }
+ 
+ //登录
+ .inputP {
+     .el-input__inner {
+         padding: 0 50px;
+         height: 44px;
+         line-height: 44px;
+     }
+     .el-form-item__error {
+         font-size: 14px;
+         color: #FF3138;
+         font-family: "PingFangSC-Regular";
+     }
+ }

@@ -91,14 +91,15 @@
             background-color: $menuHover !important;
         }
     }
-    //变绿
-    .menu-wrapper {
-        .el-menu-item.is-active {
+    .el-menu-item,
+    .el-submenu__title {
+        &:hover {
             background-color: $menuHover !important;
         }
     }
-    .el-menu-item {
-        &:hover {
+    //变绿
+    .menu-wrapper {
+        .el-menu-item.is-active {
             background-color: $menuHover !important;
         }
     }

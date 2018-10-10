@@ -11,7 +11,6 @@ import "element-ui/lib/theme-chalk/index.css";
 import '@/pages/index/styles/index.scss' // global css
 
 import '@/pages/index/permission' // permission control
-
 Vue.use(ElementUI);
 Vue.config.productionTip = false;
 
