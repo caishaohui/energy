@@ -12,10 +12,9 @@ import '@/assets/js/common.js'
 import '@/pages/index/permission' // permission control
 Vue.use(ElementUI);
 Vue.config.productionTip = false;
-
+import '@/assets/font/iconfont.css'
 new Vue({
     router,
     store,
     render: h => h(App)
 }).$mount("#app");
-

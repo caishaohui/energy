@@ -27,8 +27,8 @@
       <div class="box_map">
 
           <!--客户按钮-->
-          <div class="box_map_customer_list">客户列表 > ></div>
-
+          <div class="box_map_customer_list"  @click="dialogTableVisible = true">客户列表 > ></div>
+             <customer-pop :dialogTableVisible.sync="dialogTableVisible"></customer-pop> 
           <!--实时总负荷，实时总电量-->
           <div class="box_map_load_electric">
               <div class="box_map_load_electric_load">
@@ -88,6 +88,7 @@
     import mapCenterIcon from '@/assets/icon/mapCenterIcon.png'
     import mapElectricianIcon from '@/assets/icon/mapElectricianIcon.png'
     import mapCustomerIcon from '@/assets/icon/mapCustomerIcon.png'
+        import CustomerPop from './compoents/customer-pop.vue'
 export default {
   data() {
     return {
@@ -108,7 +109,8 @@ export default {
         electricIcon,
         mapCenterIcon,
         mapElectricianIcon,
-        mapCustomerIcon
+        mapCustomerIcon,
+        dialogTableVisible: false,
     }
   },
   methods: {
@@ -325,6 +327,9 @@ export default {
     },
     mounted(){
         this.getCustomerData()
+    },
+     components:{
+        CustomerPop
     }
 }
 </script>

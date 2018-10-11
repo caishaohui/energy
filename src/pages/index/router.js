@@ -76,44 +76,22 @@ export const constantRouterMap = [{
                 meta: { title: '中心管理' }
             },
             {
-                path: 'menu1',
+                path: 'customer-mag',
                 component: () =>
-                    import ('@/pages/index/views/system-settings/menu1/index'), // Parent router-view
-                name: 'menu1',
+                    import ('@/pages/index/views/system-settings/customer-mag/index'), // Parent router-view
+                name: 'customer-mag',
                 meta: { title: '客户管理' },
                 children: [{
-                        path: 'menu1-1',
+                        path: 'customer-list',
                         component: () =>
-                            import ('@/pages/index/views/system-settings/menu1/menu1-1'),
-                        name: 'menu1-1',
-                        meta: { title: 'menu1-1' }
-                    },
-                    {
-                        path: 'menu1-2',
-                        component: () =>
-                            import ('@/pages/index/views/system-settings/menu1/menu1-2'),
-                        name: 'menu1-2',
-                        meta: { title: 'menu1-2' },
-                        children: [{
-                                path: 'menu1-2-1',
-                                component: () =>
-                                    import ('@/pages/index/views/system-settings/menu1/menu1-2/menu1-2-1'),
-                                name: 'menu1-2-1',
-                                meta: { title: 'menu1-2-1' }
-                            },
-                            {
-                                path: 'menu1-2-2',
-                                component: () =>
-                                    import ('@/pages/index/views/system-settings/menu1/menu1-2/menu1-2-2'),
-                                name: 'menu1-2-2',
-                                meta: { title: 'menu1-2-2' }
-                            }
-                        ]
+                            import ('@/pages/index/views/system-settings/customer-mag/customer-list'),
+                        name: 'customer-list',
+                        meta: { title: '客户列表' }
                     },
                     {
                         path: 'menu1-3',
                         component: () =>
-                            import ('@/pages/index/views/system-settings/menu1/menu1-3'),
+                            import ('@/pages/index/views/system-settings/customer-mag/menu1-3'),
                         name: 'menu1-3',
                         meta: { title: 'menu1-3' }
                     }

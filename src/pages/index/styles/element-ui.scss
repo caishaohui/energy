@@ -59,16 +59,6 @@
      }
  }
  
- //登录
- .inputP {
-     .el-input__inner {
-         padding: 0 50px;
-         height: 44px;
-         line-height: 44px;
-     }
-     .el-form-item__error {
-         font-size: 14px;
-         color: #FF3138;
-         font-family: "PingFangSC-Regular";
-     }
+ .login-form .el-input__inner {
+     padding: 0 50px;
  }
