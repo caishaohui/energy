@@ -48,21 +48,26 @@
                             <span>客户总计</span>
                             <span class="total_box_number">107</span>
                         </div>
-                         <div><img :src="mapCustomerIcon" alt=""></div>
+
+                             <img :src="mapCustomerIcon" alt="">
+
                      </div>
                       <div class="total_box_center">
                           <div>
                               <span>中心总计</span>
                               <span class="total_box_number">154</span>
                           </div>
-                          <div><img :src="mapCenterIcon" alt=""></div>
+
+                              <img :src="mapCenterIcon" alt="">
+
                       </div>
                       <div class="total_box_electric">
                           <div>
                               <span>电工总计</span>
                               <span class="total_box_number">014</span>
                           </div>
-                          <div><img :src="mapElectricianIcon" alt=""></div>
+
+                              <img :src="mapElectricianIcon" alt="">
                       </div>
                   </div>
               </div>
@@ -350,7 +355,7 @@ export default {
 
     .total_box_number{
         font-family: 'NeuesBauenDemo';
-        font-size: 48px;
+        font-size:0.48rem;
     }
 .line{
   text-align: center;
