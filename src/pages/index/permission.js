@@ -35,7 +35,7 @@ router.beforeEach((to, from, next) => {
             NProgress.done()
         }
     }
-})
+});
 
 router.afterEach(() => {
     NProgress.done() // 结束Progress

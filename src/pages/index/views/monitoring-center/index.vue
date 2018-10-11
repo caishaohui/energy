@@ -1,6 +1,8 @@
 <template>
   <div class="app-container">
+      <div class="testq"></div>
       <div class="customer-box">
+
       <el-tabs v-model="activeName" @tab-click="handleClick">
           <!--客户-->
           <el-tab-pane label="客户" name="first">
@@ -44,21 +46,21 @@
                      <div class="total_box_customer">
                         <div>
                             <span>客户总计</span>
-                            <span>111</span>
+                            <span class="total_box_number">107</span>
                         </div>
                          <div><img :src="mapCustomerIcon" alt=""></div>
                      </div>
-                      <div class="total_box_customer">
+                      <div class="total_box_center">
                           <div>
                               <span>中心总计</span>
-                              <span>111</span>
+                              <span class="total_box_number">154</span>
                           </div>
                           <div><img :src="mapCenterIcon" alt=""></div>
                       </div>
-                      <div class="total_box_customer">
+                      <div class="total_box_electric">
                           <div>
                               <span>电工总计</span>
-                              <span>111</span>
+                              <span class="total_box_number">014</span>
                           </div>
                           <div><img :src="mapElectricianIcon" alt=""></div>
                       </div>
@@ -102,7 +104,6 @@ export default {
         mapCenterIcon,
         mapElectricianIcon,
         mapCustomerIcon
-
     }
   },
   methods: {
@@ -188,19 +189,17 @@ export default {
                       }
                       //返回一个新的Marker
                       return new AMap.Marker({
-
                           label: label,
                           title:data.id,
                           icon: new AMap.Icon({
                               size: new AMap.Size(40, 60),  //图标大小
                               image: _this.mapIcon,
-
                           })
                       });
                   },
                   //返回数据项对应的infoWindow
                   getInfoWindow: function(dataItem, context, recycledInfoWindow) {
-                      var tpl ="<div id='mapInfowindow' style='background:#314772;height: 300px'>" +
+                      var tpl ="<div id='mapInfowindow' >" +
                           "<div><%- dataItem.company %>：<%- dataItem.infoWinContent %><p>联系人：<%- dataItem.person %><%- dataItem.infoWinContent %></p><p>联系电话:<%- dataItem.phone %></p></div>"+
                           "<img src='"+_this.loadIcon+"' style='width: 20px;height: 20px'>"+
                           "<img src='"+_this.electricIcon+"' style='width: 20px;height: 20px'>"+
@@ -226,7 +225,7 @@ export default {
                       //返回一个新的InfoWindow
                       return new AMap.InfoWindow({
                           offset: new AMap.Pixel(0, -30),
-                          content:content
+                          content: content
                       });
                   },
                   //返回数据项对应的列表节点
@@ -317,14 +316,42 @@ export default {
           });
       }
   },
+    created(){
+    },
     mounted(){
         this.getCustomerData()
     }
 }
 </script>
+<style  class="AMap.style">
+    /*body{*/
+    body .amap-info-content{
+        background: rgba(12,27,53,0.75);
+    }
+    /*}*/
+</style>
 <style rel="stylesheet/scss" lang="scss"  scoped>
     @import "../../styles/monitoring.scss";
+    html{
+        font-size: 100px;
+    }
+    /*.testq{*/
+        /*width: 3.18rem;*/
+        /*height: 1.2rem;*/
+        /*background: red;*/
+    /*}*/
+    @font-face {
+        font-family: 'NeuesBauenDemo';
+        src: url('../../../../assets/font/DS-DIGIB.TTF');
+        font-weight: normal;
+        font-style: normal;
+    }
 
+
+    .total_box_number{
+        font-family: 'NeuesBauenDemo';
+        font-size: 48px;
+    }
 .line{
   text-align: center;
  }
