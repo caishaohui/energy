@@ -2,11 +2,6 @@ import Vue from 'vue'
 import Router from 'vue-router'
 /* Layout */
 import Layout from './views/layout/Layout'
-import monitoringCenter from '@/assets/icon/monitoring-center.png'
-import commandDispatch from '@/assets/icon/command-dispatch.png'
-import settingImg from '@/assets/icon/setting.png'
-
-
 Vue.use(Router)
 
 export const constantRouterMap = [{
@@ -45,7 +40,7 @@ export const constantRouterMap = [{
             name: 'monitoring',
             component: () =>
                 import ('@/pages/index/views/monitoring-center/index'),
-            meta: { title: '监控中心', icon: monitoringCenter }
+            meta: { title: '监控中心', icon: 'iconfont icon-monitoringCenter' }
         }]
     },
     {
@@ -56,7 +51,7 @@ export const constantRouterMap = [{
             name: 'command',
             component: () =>
                 import ('@/pages/index/views/command-dispatch/index'),
-            meta: { title: '指挥调度', icon: commandDispatch }
+            meta: { title: '指挥调度', icon: 'iconfont icon-commandDispatch' }
         }]
     },
     {
@@ -66,7 +61,7 @@ export const constantRouterMap = [{
         name: 'system-settings',
         meta: {
             title: '系统设置',
-            icon: settingImg
+            icon: 'iconfont icon-setting'
         },
         children: [{
                 path: 'center-mag',

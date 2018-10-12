@@ -28,6 +28,7 @@
      }
  }
  
+ //监控中心客户列表
  .app-wrapper {
      .el-input__inner {
          height: 32px;
@@ -101,19 +102,6 @@
          .el-form-item__content {
              margin-right: 0.16rem !important;
          }
-         .el-form-item:last-of-type {
-             .el-button {
-                 position: absolute;
-                 right: 0;
-                 top: 0;
-                 height: 32px;
-                 width: 70px;
-                 background: $menuHover;
-             }
-             .el-form-item__content {
-                 margin-left: 0 !important;
-             }
-         }
      }
      .el-table {
          padding: 0 0.32rem;
@@ -141,5 +129,34 @@
      }
      .el-pager li:not(.disabled):hover {
          color: $menuHover !important;
+     }
+     //客户列表
+     .customer-list {
+         .el-form-item:last-of-type {
+             .el-button {
+                 position: absolute;
+                 right: 0;
+                 top: 0;
+                 height: 32px;
+                 width: 70px;
+                 background: $menuHover;
+             }
+             .el-form-item__content {
+                 margin-left: 0 !important;
+             }
+         }
+     }
+     //告警事件
+     .alarmEvents {
+         .el-form-item {
+             .el-input__inner {
+                 width: 1.9rem;
+             }
+             .el-select {
+                 .el-input__inner {
+                     width: 1.26rem;
+                 }
+             }
+         }
      }
  }

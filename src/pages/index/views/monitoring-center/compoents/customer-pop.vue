@@ -1,6 +1,6 @@
 <template>
   <el-dialog title="客户列表" :visible.sync="dialogTableVisible" :before-close='closeDialog'>
-    <el-form ref="form" :model="sizeForm" label-width="80px" size="mini">
+    <el-form ref="form" :model="sizeForm" label-width="80px" size="mini" class="customer-list">
       <el-form-item label="客户类型 :">
         <el-select v-model="sizeForm.region" placeholder="全部">
           <el-option label="区域一" value="shanghai"></el-option>

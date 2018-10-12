@@ -82,10 +82,15 @@
 
         <!--右侧侧边告警-->
         <div class="box_taskError">
+
             <ul>
                 <li style="cursor: pointer;" v-for="(item,index) in errorData" @click = "errorBtn(item)">{{item.id}}</li>
             </ul>
             <p ref="moveMap">点击移动地图</p>
+
+            <!--告警事件-->
+            <i class="el-icon-arrow-right"  @click="openAlarmEventsPop"></i>
+            <alarm-events-pop  :alarmEvents.sync="alarmEvents"  class="customer_pop " ref='alarmeventspop'></alarm-events-pop>  
         </div>
     </div>
 </template>
@@ -100,6 +105,7 @@
     import mapElectricianIcon from '@/assets/icon/mapElectricianIcon.png'
     import mapCustomerIcon from '@/assets/icon/mapCustomerIcon.png'
     import CustomerPop from './compoents/customer-pop.vue'
+    import AlarmEventsPop from '@/pages/index/views/monitoring-center/compoents/alarm-events-pop'
     export default {
         data() {
             return {
@@ -123,6 +129,7 @@
                 mapElectricianIcon,
                 mapCustomerIcon,
                 dialogTableVisible: false,
+                alarmEvents:false,
             }
         },
         methods: {
@@ -364,7 +371,11 @@
                openCustomerPop(){
                   this.dialogTableVisible = true;
                   this.$refs.customerpop.getHotMovieList()
-      }
+      },
+       openAlarmEventsPop(){
+          this.alarmEvents=true;
+          this.$refs.alarmeventspop.getHotMovieList()
+    }
         },
         created(){
         },
@@ -372,7 +383,8 @@
             this.getCustomerData()
         },
         components:{
-            CustomerPop
+            CustomerPop,
+            AlarmEventsPop
         }
     }
 </script>
