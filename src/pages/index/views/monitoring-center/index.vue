@@ -85,6 +85,7 @@
             <ul>
                 <li style="cursor: pointer;" v-for="(item,index) in errorData" @click = "errorBtn(item)">{{item.id}}</li>
             </ul>
+            <p ref="moveMap">点击移动地图</p>
         </div>
     </div>
 </template>
@@ -268,7 +269,7 @@
                         // console.log(event, info);
                         // map.setCenter([info.selected.position.lng, info.selected.position.lat+0.06]);
                         console.log(info.selected.position.lng);
-                        console.log(info.selected.position.lat)
+                        console.log(info.selected.position.lat);
                     });
                     //监听Marker和ListElement上的点击
                     markerList.on('markerClick listElementClick', function(event, record) {
@@ -295,6 +296,7 @@
                         desc: '1',
                         person:'黄东文',
                     }];
+
                     //侧边栏控件数据（位置信息）
                     var CustomerData = [{
                         id: '深圳',
@@ -348,19 +350,21 @@
                     _this.errorData = errorData;
                     markerList.render(data);
                     // markerList.render(data1);
-                    _this.errorBtn()
-
+                    // console.log(_this.$refs.errorbtn)
+                    _this.$refs.moveMap.onclick = function () {
+                        map.setCenter([114.237209,22.722198]);
+                            //返回一个新的InfoWindow
+                    new AMap.InfoWindow({
+                                offset: new AMap.Pixel(0, -30),
+                                content: "<div>123</div>"
+                            });
+                    }
                 });
             },
-            errorBtn(item){
-                console.log(item)
-                console.log(this.data)
-            },
                openCustomerPop(){
-          this.dialogTableVisible=true;
-          this.$refs.customerpop.getHotMovieList()
+                  this.dialogTableVisible = true;
+                  this.$refs.customerpop.getHotMovieList()
       }
-
         },
         created(){
         },
@@ -403,7 +407,6 @@
                     text-align: center;
                 }
             }
-
         }
         .amap-info-content:hover{
             box-shadow: none;
@@ -419,11 +422,6 @@
     html{
         font-size: 100px;
     }
-    /*.testq{*/
-    /*width: 3.18rem;*/
-    /*height: 1.2rem;*/
-    /*background: red;*/
-    /*}*/
     @font-face {
         font-family: 'NeuesBauenDemo';
         src: url('../../../../assets/font/DS-DIGIB.TTF');
@@ -433,12 +431,6 @@
     .total_box_number{
         font-family: 'NeuesBauenDemo';
         font-size:0.48rem;
-    }
-    .line{
-        text-align: center;
-    }
-    .amap-info-close{
-
     }
 </style>
 
