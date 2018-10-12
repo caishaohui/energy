@@ -31,8 +31,8 @@
               <div id="container">
 
                   <!--客户按钮-->
-                  <div class="box_map_customer_list"  @click="dialogTableVisible = true">客户列表 > ></div>
-                  <customer-pop :dialogTableVisible.sync="dialogTableVisible"></customer-pop>
+                  <div class="box_map_customer_list"  @click="openCustomerPop">客户列表 > ></div>
+                  <customer-pop :dialogTableVisible.sync="dialogTableVisible"  class="customer_pop" ref='customerpop'></customer-pop>
                   <!--实时总负荷，实时总电量-->
                   <div class="box_map_load_electric">
                       <div class="box_map_load_electric_load">
@@ -335,6 +335,11 @@ export default {
               //展示该数据
               markerList.render(data);
           });
+
+      },
+      openCustomerPop(){
+          this.dialogTableVisible=true;
+          this.$refs.customerpop.getHotMovieList()
       }
   },
     created(){

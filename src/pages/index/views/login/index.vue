@@ -120,9 +120,9 @@
     };
 </script>
 
-<style rel="stylesheet/scss" lang="scss" scoped>
+<style rel="stylesheet/scss" lang="scss">
     .logosvg {
-        font-size: 56px;
+        font-size: 0.56rem;
         color: #00367A;
         font-weight: 500;
     }
@@ -137,8 +137,8 @@
         fill: #11366f;
     }
     .logosvg {
-        width: 75px;
-        height: 55px;
+        width: 0.75rem;
+        height: 0.55rem;
         vertical-align: middle;
     } //logo svg end
     .login-container {
@@ -147,17 +147,17 @@
         height: 100%;
         .el-header,
         .el-footer {
-            height: 16.76% !important;
+            height: 1.81rem !important;
             width: 100%;
             background-color: #fff;
         }
         .el-header {
             position: relative;
-            line-height: 16.76%;
+            line-height: 1.81rem;
             .login-top-title {
                 font-family: "PangMenZhengDao";
                 font-weight: 700;
-                font-size: 42px;
+                font-size: 0.42rem;
                 color: #393D49;
                 position: absolute;
                 left: 50%;
@@ -173,39 +173,38 @@
             span {
                 position: absolute;
                 left: 50%;
-                bottom: 26px;
+                bottom: 0.26rem;
                 transform: translateX(-50%);
             }
         }
         .el-main {
             width: 100%;
-            height: 66.48%;
+            height: 7.18rem;
             padding: 0;
             display: flex;
             flex-direction: column;
             justify-content: center;
             .login-form {
-                width: 400px;
-                height: 438px;
+                width: 4rem;
                 align-self: flex-end;
-                margin-right: 14.74%;
-                padding: 0 40px;
+                margin-right: 2.82rem;
+                padding: 0 0.4rem;
                 background-color: #fff;
                 border-radius: 4px;
                 .title {
-                    font-size: 28px;
+                    font-size: 0.28rem;
                     font-weight: 400;
                     color: $light_gray;
                     text-align: center;
-                    margin: 42px 0;
+                    margin: 0.42rem 0;
                     font-family: "PingFangSC-Medium";
                 }
                 .el-form-item {
-                    margin-bottom: 26px;
+                    margin-bottom: 0.26rem;
                     position: relative;
                     .inputsvg {
                         position: absolute;
-                        left: 16px;
+                        left: 0.16rem;
                         top: 0;
                         color: #9b9b9b;
                         z-index: 2;
@@ -213,28 +212,43 @@
                     .el-button {
                         background-color: $light_gray;
                         width: 100%;
-                        height: 46px;
-                        font-size: 20px;
+                        height: 0.46rem;
+                        font-size: 0.2rem;
+                        padding: 0;
                         font-family: "PingFangSC-Medium";
                     }
+                   
+                }
+                .el-form-item:last-of-type{
+                     margin-bottom: 0.36rem;
+                    .el-form-item__content{
+                        height: 0.46rem;
+                    }
+                }
+                .el-input__inner {
+                    height: 0.44rem !important;
+                    line-height: 0.44rem !important;
+                }
+                .el-form-item__content{
+                    line-height: 0.44rem;
                 }
                 .codebox {
-                    line-height: 44px;
-                    margin-bottom: 52px;
+                    line-height: 0.44rem;
+                    margin-bottom: 0.52rem;
                     .line {
                         width: 1px;
-                        height: 36px;
+                        height: 0.36rem;
                         background: #dbd9da;
                         position: absolute;
-                        right: 85px;
-                        top: 5px;
+                        right: 0.85rem;
+                        top: 0.05rem;
                     }
                     .codeImg {
                         position: absolute;
-                        right: 7px;
-                        top: 8px;
-                        width: 72px;
-                        height: 28px;
+                        right: 0.07rem;
+                        top: 0.06rem;
+                        width: 0.72rem;
+                        height: 0.32rem;
                     }
                 }
             }
