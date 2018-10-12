@@ -1,8 +1,8 @@
 <template>
   <div class="app-container">
-      <div class="testq"></div>
-      <div class="customer-box">
 
+      <!--客户列表侧边栏-->
+      <div class="customer-box">
       <el-tabs v-model="activeName" @tab-click="handleClick">
           <!--客户-->
           <el-tab-pane label="客户" name="first">
@@ -24,24 +24,28 @@
       </el-tabs>
       </div>
      <!--<el-button @click="jump">跳转到客户页面</el-button>-->
-      <div class="box_map">
 
-          <!--客户按钮-->
-          <div class="box_map_customer_list"  @click="dialogTableVisible = true">客户列表 > ></div>
-             <customer-pop :dialogTableVisible.sync="dialogTableVisible"></customer-pop> 
-          <!--实时总负荷，实时总电量-->
-          <div class="box_map_load_electric">
-              <div class="box_map_load_electric_load">
-                  <img :src="loadIcon" alt="">
-                  <span> 实时总负荷:132456 KVA</span>
-              </div>
-              <div class="box_map_load_electric_electric">
-                  <img :src="electricIcon" alt="">
-                  <span>实时总电量:132456 KWH</span>
-              </div>
-          </div>
+     <!--地图-->
+      <div class="box_map">
           <div id="my-list" style="display: none"></div>
               <div id="container">
+
+                  <!--客户按钮-->
+                  <div class="box_map_customer_list"  @click="dialogTableVisible = true">客户列表 > ></div>
+                  <customer-pop :dialogTableVisible.sync="dialogTableVisible"></customer-pop>
+                  <!--实时总负荷，实时总电量-->
+                  <div class="box_map_load_electric">
+                      <div class="box_map_load_electric_load">
+                          <img :src="loadIcon" alt="">
+                          <span> 实时总负荷:132456 KVA</span>
+                      </div>
+                      <div class="box_map_load_electric_electric">
+                          <img :src="electricIcon" alt="">
+                          <span>实时总电量:132456 KWH</span>
+                      </div>
+                  </div>
+
+                  <!--总计-->
                   <div class="total_box">
                      <div class="total_box_customer">
                         <div>
@@ -76,6 +80,12 @@
                   </div>
               </div>
       </div>
+
+      <!--右侧侧边告警-->
+      <div class="box_taskError">
+
+      </div>
+
   </div>
 </template>
 <script>
@@ -207,12 +217,16 @@ export default {
                   //返回数据项对应的infoWindow
                   getInfoWindow: function(dataItem, context, recycledInfoWindow) {
                       var tpl ="<div id='mapInfowindow' >" +
-                          "<div><%- dataItem.company %>：<%- dataItem.infoWinContent %><p>联系人：<%- dataItem.person %><%- dataItem.infoWinContent %></p><p>联系电话:<%- dataItem.phone %></p></div>"+
-                          "<img src='"+_this.loadIcon+"' style='width: 20px;height: 20px'>"+
-                          "<img src='"+_this.electricIcon+"' style='width: 20px;height: 20px'>"+
-                          "<img src='"+_this.recordIcon+"' style='width: 50px;height: 50px'>"+
-                          "<img src='"+_this.errorIcon+"' style='width: 50px;height: 50px'>"+
-                          "<img src='"+_this.facilityIcon+"' style='width: 50px;height: 50px'>"+
+                          "<div><p><%- dataItem.company %>：<%- dataItem.infoWinContent %></p><p>联系人：<%- dataItem.person %><%- dataItem.infoWinContent %></p><p>联系电话:<%- dataItem.phone %></p></div>"+
+                         "<span class='striping'></span>"+
+                              "<div class='infowindowload'><img src='"+_this.loadIcon+"' style='width: 20px;height: 20px'><span>123</span></div>"+
+                              "<div class='infowindowload'><img src='"+_this.electricIcon+"' style='width: 20px;height: 20px'><span>456</span></div>"+
+                           "<div class='infowindowfour'>" +
+                              "<div><img src='"+_this.recordIcon+"' style='width: 50px;height: 50px'><div>运维记录</div></div>"+
+                              "<div><img src='"+_this.errorIcon+"' style='width: 50px;height: 50px'><div>告警事件</div></div>"+
+                          "<div><img src='"+_this.facilityIcon+"' style='width: 50px;height: 50px'><div>设备列表</div></div>"+
+                          "<div><div>更多闲情</div></div>"+
+                          "</div>"+
                           "</div>";
 
                       var  mapInfowindow = document.getElementById("mapInfowindow");
@@ -259,7 +273,7 @@ export default {
               //监听选中改变
               markerList.on('selectedChanged', function(event, info) {
                   // console.log(event, info);
-                  map.setCenter([info.selected.position.lng, info.selected.position.lat+0.05]);
+                  map.setCenter([info.selected.position.lng, info.selected.position.lat+0.06]);
                   console.log(info.selected.position.lng);
                   console.log(info.selected.position.lat)
               });
@@ -333,12 +347,51 @@ export default {
     }
 }
 </script>
-<style  class="AMap.style">
-    /*body{*/
-    body .amap-info-content{
-        background: rgba(12,27,53,0.75);
-    }
-    /*}*/
+<style  class="AMap.style" lang="scss">
+
+
+
+  .box_map{
+      .amap-info-content{
+          width:400px ;
+          background: rgba(12,27,53,0.75);
+          box-shadow: none;
+          border-radius: 4px;
+          color: white;
+          padding: 0  10px;
+          #mapInfowindow{
+              >div{
+                  >p{
+                      line-height: 10px;
+                  }
+              }
+              .striping{
+                  display: block;
+                  opacity: 0.8;
+                  width: 100%;
+                  height: 1px;
+                  background: white;
+              }
+              .infowindowload{
+                  display: inline-block;
+              }
+              .infowindowfour>div{
+                  width: 50%;
+                  float: left;
+                  text-align: center;
+              }
+          }
+
+      }
+      .amap-info-content:hover{
+          box-shadow: none;
+          cursor: pointer;
+      }
+      .amap-info-close{
+
+          top: 12px;
+      }
+  }
 </style>
 <style rel="stylesheet/scss" lang="scss"  scoped>
     @import "../../styles/monitoring.scss";
@@ -366,7 +419,7 @@ export default {
   text-align: center;
  }
 .amap-info-close{
-        font: bold 30px/14px Tahoma,Verdana,sans-serif
+
   }
 </style>
 

@@ -7,6 +7,7 @@
 //     return path.join(__dirname, dir)
 // }
 module.exports = {
+
     // 项目部署的基础路径
     // 我们默认假设你的应用将会部署在域名的根部，
     // 比如 https://www.my-app.com/
@@ -80,7 +81,9 @@ module.exports = {
         // 查阅 https://github.com/vuejs/vue-docs-zh-cn/blob/master/vue-cli/cli-service.md#配置代理
         // proxy: 'http://localhost:3001', // string | Object
         before: app => {}
+
     },
+
     pages: {
         index: {
             // page 的入口
