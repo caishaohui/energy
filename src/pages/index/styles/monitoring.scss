@@ -1,5 +1,13 @@
+li,ul{
+  list-style: none;
+  margin-left: 0px;
+  padding: 0px;
+}
 html{
 
+}
+.clear{
+  clear: both;
 }
 .app-container{
   background: #e4eaf6;
@@ -122,6 +130,62 @@ html{
     //background: red;
     height: 100%;
     float: right;
+
+    //任务动态样式
+    .box_task{
+      padding: 0  20px;
+      background: #FAFAFA;
+      &_title{
+        box-sizing: border-box;
+        &_sign{
+          width: 4px;
+          height: 18px;
+          display: inline-block;
+          //line-height: 50px;
+          background: #3DB4E8;
+          margin-right: 10px;
+          transform: translateY(50%);
+          -webkit-transform: translateY(50%);
+          float: left;
+          margin-top: 8px;
+        }
+       p{
+         display: inline-block;
+         font-size: 16px;
+         font-weight: bold;
+       }
+        img{
+          float: right;
+          transform: translateY(50%);
+          -webkit-transform: translateY(50%);
+        }
+      }
+    }
+    .box_task_content{
+      li{
+        border-bottom: 1px solid #E8E8E8 ;
+        margin-bottom: 10px;
+        >img{
+          float: left;
+        }
+      }
+
+      &_site{
+        padding: 10px 0px;
+        display: inline-block;
+        float: left;
+        margin-left: 10px;
+        >div:nth-child(1){
+          padding: 0px;
+          font-size: 18px;
+          transform: translateY(-9px);
+        }
+      }
+      &_achieve{
+        display: inline-block;
+        float: right;
+      }
+    }
   }
 }
 //.customer{
