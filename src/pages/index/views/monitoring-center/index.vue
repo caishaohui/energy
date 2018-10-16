@@ -29,7 +29,6 @@
         <div class="box_map">
             <div id="my-list" style="display: none"></div>
             <div id="container">
-
                 <!--客户按钮-->
                 <div class="box_map_customer_list"  @click="openCustomerPop">客户列表 > ></div>
                 <customer-pop :dialogTableVisible.sync="dialogTableVisible"  class="customer_pop" ref='customerpop'></customer-pop>
@@ -44,7 +43,6 @@
                         <span>实时总电量:132456 KWH</span>
                     </div>
                 </div>
-
                 <!--总计-->
                 <div class="total_box">
                     <div class="total_box_customer">
@@ -168,7 +166,230 @@
                 console.log($('#'+'data.desc'));
             },
             getCustomerData(){
+                var _this = this;
+                //创建地图
+                var map = new AMap.Map('container', {
+                    zoom: 9,
+                });
+                map.setFitView();
+                //关闭信息窗体
+                function closeInfoWindow() {
+                    map.clearInfoWindow();
+                }
+                AMapUI.loadUI(['misc/MarkerList','overlay/SimpleInfoWindow'], function(MarkerList,SimpleInfoWindow) {
+                    // <!-- 重点参数：getDataId，getPosition，getMarker，getInfoWindow，getListElement -->
+                    // <!-- 重点代码: markerList.render -->
 
+                    // openInfoWin();
+                    var markerList = new MarkerList({
+                        //关联的map对象
+                        map: map,
+                        //列表的dom容器的id
+                        listContainer: 'my-list',
+                        //选中状态（通过点击列表或者marker）时在Marker和列表节点上添加的class，可以借此编写css控制选中时的展示效果
+                        selectedClassNames: 'selected',
+                        //返回数据项的Id
+                        getDataId: function(dataItem, index) {
+                            //index表示该数据项在数组中的索引位置，从0开始，如果确实没有id，可以返回index代替
+                            return dataItem.id;
+                        },
+                        //返回数据项的位置信息，需要是AMap.LngLat实例，或者是经纬度数组，比如[116.789806, 39.904989]
+                        getPosition: function(dataItem) {
+                            return dataItem.position;
+                        },
+                        //返回数据项对应的Marker
+                        getMarker: function(dataItem, context, recycledMarker) {
+                            //marker的标注内容
+                            var content = dataItem.markerLabel;
+                            var label = {
+                                offset: new AMap.Pixel(16, 18), //修改label相对于marker的位置
+                                content: content
+                            };
+                            //存在可回收利用的marker
+                            if (recycledMarker) {
+                                //直接更新内容返回
+                                recycledMarker.setLabel(label);
+                                return recycledMarker;
+                            }
+                            //返回一个新的Marker
+                            return new AMap.Marker({
+                                label: label,
+                                title:data.id,
+                                icon: new AMap.Icon({
+                                    size: new AMap.Size(40, 60),  //图标大小
+                                    image: _this.mapIcon,
+                                })
+                            });
+                        },
+                        //返回数据项对应的infoWindow
+                        getInfoWindow: function(dataItem, context, recycledInfoWindow){
+                            var tpl ="<div id='mapInfowindow'>" +
+                                "<div><p><%- dataItem.company %>：<%- dataItem.infoWinContent %></p><p>联系人：<%- dataItem.person %><%- dataItem.infoWinContent %></p><p>联系电话:<%- dataItem.phone %></p></div>"+
+                                "<span class='striping'></span>"+
+                                "<div class='infowindowload'><img src='"+_this.loadIcon+"' style='width: 20px;height: 20px'><span>123</span></div>"+
+                                "<div class='infowindowload'><img src='"+_this.electricIcon+"' style='width: 20px;height: 20px'><span>456</span></div>"+
+                                "<div class='infowindowfour'>" +
+                                "<div><img src='"+_this.recordIcon+"' style='width: 50px;height: 50px'><div>运维记录</div></div>"+
+                                "<div><img src='"+_this.errorIcon+"' style='width: 50px;height: 50px'><div>告警事件</div></div>"+
+                                "<div><img src='"+_this.facilityIcon+"' style='width: 50px;height: 50px'><div>设备列表</div></div>"+
+                                "<div><div>更多闲情</div></div>"+
+                                "</div>"+
+                                "</div>";
+                            //MarkerList.utils.template支持underscore语法的模板
+                            var content = MarkerList.utils.template(tpl, {
+                                dataItem: dataItem,
+                                dataIndex: context.index
+                            });
+                            if (recycledInfoWindow) {
+                                //存在可回收利用的infoWindow, 直接更新内容返回
+                                recycledInfoWindow.setContent(content);
+                                return recycledInfoWindow;
+                            }
+                            //返回一个新的InfoWindow
+                            return new AMap.InfoWindow({
+                                offset: new AMap.Pixel(0, -30),
+                                content: content
+                            });
+                        },
+                        //返回数据项对应的列表节点
+                        getListElement: function(dataItem, context, recycledListElement) {
+                            var tpl = "<p class='aa' id='tb"+context.index+"'><%- dataItem.id %><p>";
+                            var con = '<p >'+'111111'+'</p>';
+                            var content = MarkerList.utils.template(tpl, {
+                                dataItem: dataItem,
+                                dataIndex: context.index
+                            });
+                            if (recycledListElement) {
+                                //存在可回收利用的listElement, 直接更新内容返回
+                                recycledListElement.innerHTML = content;
+                                return recycledListElement;
+                            }
+                            //返回一段html，MarkerList将利用此html构建一个新的dom节点
+                            return content;
+                        },
+                    });
+                    //监听选中改变
+                    markerList.on('selectedChanged', function(event, info) {
+                        // console.log(event, info);
+                        // map.setCenter([info.selected.position.lng, info.selected.position.lat+0.06]);
+                        console.log(info.selected.position.lng);
+                        console.log(info.selected.position.lat);
+                    });
+                    //监听Marker和ListElement上的点击
+                    markerList.on('markerClick listElementClick', function(event, record) {
+                        // console.log(event, record);
+                    });
+
+                    //构建一个数据项数组，数据项本身没有格式要求，但需要支持getDataId和getPosition
+                    // 事件的模拟，绑定另外一个事件的方法
+                    //所有的数据，，页面进来渲染所有
+                    var data =  [{
+                        id: '香丽大厦',
+                        position: [114.039864,22.551399],
+                        desc: '0',
+                        label:'香丽大厦',
+                        company:'深鹏达电网科技有限公司',
+                        person:'蔡少辉',
+                        phone:'12345678912',
+                    },{
+                        id: '龙岗中心城',
+                        position: [114.237209,22.722198],
+                        label:'龙岗中心城',
+                        company:'广东峭函堔鑫建设工程有限公司',
+                        phone:'13556885862',
+                        desc: '1',
+                        person:'黄东文',
+                    }];
+                    //侧边栏控件数据（位置信息）
+                    var CustomerData = [{
+                        id: '深圳',
+                        label:'深圳',
+                        person:'深圳',
+                        children:[{
+                            label:'宝安区',
+                        }, {
+                            label:'罗湖区',
+                        }, {
+                            label:'福田区',
+                            children:[{
+                                label:'test'
+                            }]
+                        },{
+                            label:'龙岗区',
+                            children:[{
+                                label:'test'
+                            }]
+                        },{
+                            label:'南山区'
+                        },{
+                            label:'盐田区'
+                        },{
+                            label:'坪山区'
+                        }
+                        ]
+                    }];
+                    _this.data = CustomerData;
+                    _this.mapData = data;
+                    //展示该数据
+
+                    // 告警事件数据
+                    var errorData = [{
+                        id: '温湿度异常',
+                        position: [114.039864,22.551399],
+                        desc: '0',
+                        label:'温湿度异常',
+                        company:'深鹏达电网科技有限公司',
+                        person:'蔡少辉',
+                        phone:'12345678912',
+                    },{
+                        id: '温湿度异常',
+                        position: [114.237209,22.722198],
+                        label:'温湿度异常',
+                        company:'广东峭函堔鑫建设工程有限公司',
+                        phone:'13556885862',
+                        desc: '1',
+                        person:'黄东文',
+                    }];
+                    _this.errorData = errorData;
+                    markerList.render(data);
+                    console.log(markerList);
+                    // markerList.render(data1);
+                    // console.log(_this.$refs.errorbtn)
+                    _this.$refs.moveMap.onclick = function () {
+                        map.setCenter([114.039499,22.552602]);
+                        var data = [{
+                            id: '福田区科技中学',
+                            position: [114.040191,22.553451],
+                            desc: '0',
+                            label:'香丽大厦',
+                            company:'福田区科技中学',
+                            person:'蔡少辉',
+                            phone:'12345678912',
+                        }];
+                        markerList.render(data);
+                        console.log(markerList);
+                        // map.setCenter([114.237209,22.722198]);
+                        //返回一个新的InfoWindow
+                    };
+                    _this.$refs.testMap.onclick = function () {
+                        var data = [{
+                            id: 'aaaa',
+                            position: [114.039499,22.552602],
+                            desc: '0',
+                            label:'aaaa',
+                            company:'aaaaaaaaa',
+                            person:'aaa',
+                            phone:'aaa',
+                        }];
+                        markerList.render(data);
+                        console.log(markerList);
+                        // map.setCenter([114.039499,22.552602]);
+                        //返回一个新的InfoWindow
+                        // 114.039499,22.552602
+
+
+                    }
+                });
             },
                openCustomerPop(){
                   this.dialogTableVisible = true;
@@ -179,7 +400,6 @@
           this.$refs.alarmeventspop.getHotMovieList()
     },
             errorBtn(data){
-
                 //返回一个新的InfoWindow
                 new AMap.InfoWindow({
                     offset: new AMap.Pixel(0, -30),
@@ -191,232 +411,6 @@
         },
         mounted(){
             this.getCustomerData();
-            var _this = this;
-            //创建地图
-            var map = new AMap.Map('container', {
-                zoom: 9,
-            });
-            map.setFitView();
-            //关闭信息窗体
-            function closeInfoWindow() {
-                map.clearInfoWindow();
-            }
-            AMapUI.loadUI(['misc/MarkerList','overlay/SimpleInfoWindow'], function(MarkerList,SimpleInfoWindow) {
-                // <!-- 重点参数：getDataId，getPosition，getMarker，getInfoWindow，getListElement -->
-                // <!-- 重点代码: markerList.render -->
-
-                // openInfoWin();
-                var markerList = new MarkerList({
-                    //关联的map对象
-                    map: map,
-                    //列表的dom容器的id
-                    listContainer: 'my-list',
-                    //选中状态（通过点击列表或者marker）时在Marker和列表节点上添加的class，可以借此编写css控制选中时的展示效果
-                    selectedClassNames: 'selected',
-                    //返回数据项的Id
-                    getDataId: function(dataItem, index) {
-                        //index表示该数据项在数组中的索引位置，从0开始，如果确实没有id，可以返回index代替
-                        return dataItem.id;
-                    },
-                    //返回数据项的位置信息，需要是AMap.LngLat实例，或者是经纬度数组，比如[116.789806, 39.904989]
-                    getPosition: function(dataItem) {
-                        return dataItem.position;
-                    },
-                    //返回数据项对应的Marker
-                    getMarker: function(dataItem, context, recycledMarker) {
-                        //marker的标注内容
-                        var content = dataItem.markerLabel;
-                        var label = {
-                            offset: new AMap.Pixel(16, 18), //修改label相对于marker的位置
-                            content: content
-                        };
-                        //存在可回收利用的marker
-                        if (recycledMarker) {
-                            //直接更新内容返回
-                            recycledMarker.setLabel(label);
-                            return recycledMarker;
-                        }
-                        //返回一个新的Marker
-                        return new AMap.Marker({
-                            label: label,
-                            title:data.id,
-                            icon: new AMap.Icon({
-                                size: new AMap.Size(40, 60),  //图标大小
-                                image: _this.mapIcon,
-                            })
-                        });
-                    },
-                    //返回数据项对应的infoWindow
-                    getInfoWindow: function(dataItem, context, recycledInfoWindow) {
-                        var tpl ="<div id='mapInfowindow' >" +
-                            "<div><p><%- dataItem.company %>：<%- dataItem.infoWinContent %></p><p>联系人：<%- dataItem.person %><%- dataItem.infoWinContent %></p><p>联系电话:<%- dataItem.phone %></p></div>"+
-                            "<span class='striping'></span>"+
-                            "<div class='infowindowload'><img src='"+_this.loadIcon+"' style='width: 20px;height: 20px'><span>123</span></div>"+
-                            "<div class='infowindowload'><img src='"+_this.electricIcon+"' style='width: 20px;height: 20px'><span>456</span></div>"+
-                            "<div class='infowindowfour'>" +
-                            "<div><img src='"+_this.recordIcon+"' style='width: 50px;height: 50px'><div>运维记录</div></div>"+
-                            "<div><img src='"+_this.errorIcon+"' style='width: 50px;height: 50px'><div>告警事件</div></div>"+
-                            "<div><img src='"+_this.facilityIcon+"' style='width: 50px;height: 50px'><div>设备列表</div></div>"+
-                            "<div><div>更多闲情</div></div>"+
-                            "</div>"+
-                            "</div>";
-                        //MarkerList.utils.template支持underscore语法的模板
-                        var content = MarkerList.utils.template(tpl, {
-                            dataItem: dataItem,
-                            dataIndex: context.index
-                        });
-                        if (recycledInfoWindow) {
-                            //存在可回收利用的infoWindow, 直接更新内容返回
-                            recycledInfoWindow.setContent(content);
-                            return recycledInfoWindow;
-                        }
-                        //返回一个新的InfoWindow
-                        return new AMap.InfoWindow({
-                            offset: new AMap.Pixel(0, -30),
-                            content: content
-                        });
-                    },
-                    //返回数据项对应的列表节点
-                    getListElement: function(dataItem, context, recycledListElement) {
-                        console.log(context.index);
-                        var aa = dataItem.desc;
-                        console.log(aa);
-                        var tpl = "<p class='aa' id='tb"+context.index+"'><%- dataItem.id %><p>";
-                        var con = '<p >'+'111111'+'</p>';
-                        var content = MarkerList.utils.template(tpl, {
-                            dataItem: dataItem,
-                            dataIndex: context.index
-                        });
-                        if (recycledListElement) {
-                            //存在可回收利用的listElement, 直接更新内容返回
-                            recycledListElement.innerHTML = content;
-                            return recycledListElement;
-                        }
-                        //返回一段html，MarkerList将利用此html构建一个新的dom节点
-                        return content;
-                    },
-                });
-                //监听选中改变
-                markerList.on('selectedChanged', function(event, info) {
-                    // console.log(event, info);
-                    // map.setCenter([info.selected.position.lng, info.selected.position.lat+0.06]);
-                    console.log(info.selected.position.lng);
-                    console.log(info.selected.position.lat);
-                });
-                //监听Marker和ListElement上的点击
-                markerList.on('markerClick listElementClick', function(event, record) {
-                    // console.log(event, record);
-                });
-
-                //构建一个数据项数组，数据项本身没有格式要求，但需要支持getDataId和getPosition
-                // 事件的模拟，绑定另外一个事件的方法
-                //所有的数据，，页面进来渲染所有
-                var data =  [{
-                    id: '香丽大厦',
-                    position: [114.039864,22.551399],
-                    desc: '0',
-                    label:'香丽大厦',
-                    company:'深鹏达电网科技有限公司',
-                    person:'蔡少辉',
-                    phone:'12345678912',
-                },{
-                    id: '龙岗中心城',
-                    position: [114.237209,22.722198],
-                    label:'龙岗中心城',
-                    company:'广东峭函堔鑫建设工程有限公司',
-                    phone:'13556885862',
-                    desc: '1',
-                    person:'黄东文',
-                }];
-                //侧边栏控件数据（位置信息）
-                var CustomerData = [{
-                    id: '深圳',
-                    label:'深圳',
-                    person:'深圳',
-                    children:[{
-                        label:'宝安区',
-                    }, {
-                        label:'罗湖区',
-                    }, {
-                        label:'福田区',
-                        children:[{
-                            label:'test'
-                        }]
-                    },{
-                        label:'龙岗区',
-                        children:[{
-                            label:'test'
-                        }]
-                    },{
-                        label:'南山区'
-                    },{
-                        label:'盐田区'
-                    },{
-                        label:'坪山区'
-                    }
-                    ]
-                }];
-                _this.data = CustomerData;
-                _this.mapData = data;
-                //展示该数据
-
-                // 告警事件数据
-                var errorData = [{
-                    id: '温湿度异常',
-                    position: [114.039864,22.551399],
-                    desc: '0',
-                    label:'温湿度异常',
-                    company:'深鹏达电网科技有限公司',
-                    person:'蔡少辉',
-                    phone:'12345678912',
-                },{
-                    id: '温湿度异常',
-                    position: [114.237209,22.722198],
-                    label:'温湿度异常',
-                    company:'广东峭函堔鑫建设工程有限公司',
-                    phone:'13556885862',
-                    desc: '1',
-                    person:'黄东文',
-                }];
-                _this.errorData = errorData;
-                markerList.render(data);
-                console.log(markerList);
-                // markerList.render(data1);
-                // console.log(_this.$refs.errorbtn)
-                _this.$refs.moveMap.onclick = function () {
-                    map.setCenter([114.039499,22.552602]);
-                    // var data = [{
-                    //     id: '福田区科技中学',
-                    //     position: [114.040191,22.553451],
-                    //     desc: '0',
-                    //     label:'香丽大厦',
-                    //     company:'福田区科技中学',
-                    //     person:'蔡少辉',
-                    //     phone:'12345678912',
-                    // }];
-                    // markerList.render(data);
-                    // console.log(markerList);
-                    // map.setCenter([114.237209,22.722198]);
-                    //返回一个新的InfoWindow
-
-                }
-                _this.$refs.testMap.onclick = function () {
-                    // var data = [{
-                    //     id: '香景大厦',
-                    //     position: [114.039499,22.552602],
-                    //     desc: '0',
-                    //     label:'香景大厦',
-                    //     company:'福田区科技中学',
-                    //     person:'香景大厦',
-                    //     phone:'香景大厦',
-                    // }];
-                    markerList.render(data);
-                    console.log(markerList);
-                    map.setCenter([114.039499,22.552602]);
-                    //返回一个新的InfoWindow
-                    // 114.039499,22.552602
-                }
-            });
         },
         components:{
             CustomerPop,
