@@ -1,55 +1,50 @@
 <template>
-    <el-dialog title="告警事件" :visible.sync="alarmEvents" :before-close='closeDialog' >
-        <el-form ref="form" :model="sizeForm" label-width="80px" size="mini" class="alarmEvents">
+    <el-dialog title="告警事件" :visible.sync="alarmEvents" :before-close='closeDialog'>
+        <el-form ref="form" :model="listQuery" label-width="80px" size="mini" class="alarmEvents">
             <el-form-item label="等级 :">
-                <el-select v-model="sizeForm.region" placeholder="所有">
-                    <el-option label="区域一" value="shanghai"></el-option>
-                    <el-option label="区域二" value="beijing"></el-option>
+                <el-select v-model="listQuery.grade" placeholder="所有">
+                    <el-option v-for="item in gradeOptions" :key="item.id" :label="item.label" :value="item.id" />
                 </el-select>
             </el-form-item>
             <el-form-item label="状态 :">
-                <el-select v-model="sizeForm.region" placeholder="所有">
-                    <el-option label="区域一" value="shanghai"></el-option>
-                    <el-option label="区域二" value="beijing"></el-option>
+                <el-select v-model="listQuery.state" placeholder="所有">
+                    <el-option v-for="item in stateOptions" :key="item.id" :label="item.label" :value="item.id" />
                 </el-select>
             </el-form-item>
             <el-form-item label="客户 :">
-                <el-input placeholder="请输入"></el-input>
+                <el-input placeholder="请输入" v-model="listQuery.client" @keyup.enter.native="handleFilter"></el-input>
             </el-form-item>
             <el-form-item label="起止时间 :">
-                <el-date-picker
-      v-model="startTime"
-      type="datetimerange"
-      align="right"
-      start-placeholder="开始日期"
-      end-placeholder="结束日期"
-      :default-time="['12:00:00', '08:00:00']">
-    </el-date-picker>
+                <el-date-picker v-model="listQuery.startTime" type="datetimerange" align="right" start-placeholder="开始日期" end-placeholder="结束日期" :default-time="['12:00:00', '08:00:00']">
+                </el-date-picker>
             </el-form-item>
             <el-form-item>
-                <el-button type="success">查询</el-button>
-                <el-button type="success">导出报表</el-button>
-                <el-button type="success">批量处理</el-button>
+                <el-button type="success" @click="handleFilter"  size="small">查询</el-button>
+                <el-button type="success" @click="exportExcel" :loading="downloadLoading"  size="small">导出报表</el-button>
+                <el-button type="success"  size="small">批量处理</el-button>
             </el-form-item>
         </el-form>
-        <el-table :data="tableInfoList" v-loading='loading'>
+        <el-table id="rebateSetTable" :data="tableInfoList" ref="multipleTable" v-loading='loading' @selection-change="handleSelectionChange">
+            <el-table-column type="selection" width="35"></el-table-column>
             <el-table-column property="number" label="编号" align="center" width="80"></el-table-column>
-            <el-table-column property="CTname" label="客户名称" align="center" width="220"></el-table-column>
-            <el-table-column property="CTtype" label="客户类型" align="center" width="170"></el-table-column>
-            <el-table-column property="CTcenter" label="所属中心" align="center" width="120"></el-table-column>
-            <el-table-column property="CTaddress" label="客户地址" align="center" width="320"></el-table-column>
-            <el-table-column property="CTpeople" label="联系人" align="center"></el-table-column>
+            <el-table-column property="CTname" label="客户名称" align="center"></el-table-column>
+            <el-table-column property="grade" label="等级" align="center"></el-table-column>
+            <el-table-column property="describe" label="描述" align="center"></el-table-column>
+            <el-table-column property="occurrenceTime" label="发生时间" align="center"></el-table-column>
+            <el-table-column property="equipment" label="设备" align="center"></el-table-column>
+            <el-table-column property="state" label="状态" align="center"></el-table-column>
             <el-table-column label="操作">
                 <template slot-scope="scope">
-                          <el-button type="text" size="small">处理</el-button>
+                                                                        <el-button type="text" size="small">处理</el-button>
 </template>
-      </el-table-column>
+            </el-table-column>
     </el-table>
     <div class="block">
       <span class="demonstration">共{{total}}条数据</span>
-      <el-pagination background layout="prev, pager, next"   :current-page="currentPage"
-      :page-size="pageSize" 
+      <el-pagination v-show="total>0"  background layout="prev, pager, next"   
       @current-change="handleCurrentChange"
+      :page-size="listQuery.limit"
+      :current-page="listQuery.page"
       :total="total"> </el-pagination>
     </div>
   </el-dialog>
@@ -57,94 +52,141 @@
 
 <script>
     export default {
+        name: 'AlarmEvents',
         created() {},
         props: ['alarmEvents'],
         data() {
             return {
-                startTime:'',
-                sizeForm: {
-                    region: '',
+                //请求和查询参数分页
+                listQuery: {
+                    page: 1, //请求哪一页
+                    limit: 3, //请求每页条数
+                    state: undefined,
+                    grade: undefined,
+                    client: undefined,
+                    startTime: undefined
                 },
-                gridData: [],
-                //分页
-                total: 0, //总数据
-                currentPage: 1, //当前页
+                gradeOptions: [{ label: '所有', id: '0' },{ label: '未处理', id: '1' }, { label: '已解决', id: '2' }, { label: '已忽略', id: '3' }],
+                stateOptions: [{ label: '所有', id: '0' },{ label: '严重', id: '1' }, { label: '紧急', id: '2' }, { label: '普通', id: '3' }],
+                total: null,
                 tableInfoList: [],
-                pageSize: 3, //每页显示的数量
-                loading: true,
+                loading: true, //列表loding
                 timeNum: '', //清除定时器
+                multipleSelection: [], //表单全选
+                downloadLoading: false, //导出按钮loding
+                filename: '告警列表', //导出excel名
             }
         },
         watch: {},
         methods: {
+            //导出
+            exportExcel() {
+                if (this.multipleSelection.length) {
+                    this.downloadLoading = true
+                    import ('@/vendor/Export2Excel.js').then(excel => {
+                        console.log('HV', excel);
+                        const tHeader = ['编号', '客户名称', '等级', '描述', '发生时间', '设备', '状态']
+                        const filterVal = ['number', 'CTname', 'grade', 'describe', 'occurrenceTime', 'equipment', 'state']
+                        const list = this.multipleSelection
+                        const data = this.formatJson(filterVal, list)
+                        excel.export_json_to_excel({
+                            header: tHeader,
+                            data,
+                            filename: this.filename
+                        })
+                        this.$refs.multipleTable.clearSelection();
+                        this.downloadLoading = false
+                    }).catch(err => {
+                        this.downloadLoading = false
+                        this.$message({
+                            message: '导出失败，请确认！',
+                            type: 'warning'
+                        })
+                    })
+                } else {
+                    this.$message({
+                        message: '请最少选择一条数据',
+                        type: 'warning'
+                    })
+                }
+            },
+            formatJson(filterVal, jsonData) {
+                return jsonData.map(v => filterVal.map(j => v[j]))
+            },
             //关闭清除数据
             closeDialog(done) {
                 this.$emit('update:alarmEvents', false)
-                this.total = 0;
-                this.loading = true;
+                this.total = null;
                 clearTimeout(this.timeNum)
+            },
+            //全选
+            toggleSelection(rows) {
+                if (rows) {
+                    rows.forEach(row => {
+                        this.$refs.multipleTable.toggleRowSelection(row);
+                    });
+                } else {
+                    this.$refs.multipleTable.clearSelection();
+                }
+            },
+            //全选获取的值
+            handleSelectionChange(val) {
+                this.multipleSelection = val;
             },
             //分页请求数据数据
             getHotMovieList() {
                 //请求获取数据列表
-                this.timeNum = setTimeout(_ => {
-                    this.gridData = [{
-                        number: '01',
-                        CTname: '深鹏达电网科技有限公司',
-                        CTtype: '普通会员',
-                        CTcenter: '福田',
-                        CTaddress: '深圳市福田区莲花路2075号香丽大厦裙楼三楼',
-                        CTpeople: '黎明-17503091882',
-                    }, {
-                        number: '01',
-                        CTname: '深鹏达电网科技有限公司',
-                        CTtype: '普通会员',
-                        CTcenter: '福田',
-                        CTaddress: '深圳市福田区莲花路2075号香丽大厦裙楼三楼',
-                        CTpeople: '黎明-17503091882',
-                    }, {
-                        number: '01',
-                        CTname: '深鹏达电网科技有限公司',
-                        CTtype: '普通会员',
-                        CTcenter: '福田',
-                        CTaddress: '深圳市福田区莲花路2075号香丽大厦裙楼三楼',
-                        CTpeople: '黎明-17503091882',
-                    }, {
-                        number: '01',
-                        CTname: '深鹏达电网科技有限公司',
-                        CTtype: '普通会员',
-                        CTcenter: '福田',
-                        CTaddress: '深圳市福田区莲花路2075号香丽大厦裙楼三楼',
-                        CTpeople: '黎明-17503091882',
-                    }, ]
-                    this.total = this.gridData.length;
-                    this.computeArr();
+                this.loading = true
+                //后台数据
+                this.tableInfoList = [{
+                    number: '01',
+                    CTname: '深鹏达电网科技有限公司',
+                    grade: '紧急',
+                    describe: '专用综合房电压异常',
+                    occurrenceTime: '2018.08.03 18:32:12',
+                    equipment: '专用综合房门禁',
+                    state: '未处理'
+                }, {
+                    number: '02',
+                    CTname: '深鹏达电网科技有限公司',
+                    grade: '紧急',
+                    describe: '专用综合房电压异常',
+                    occurrenceTime: '2018.08.03 18:32:12',
+                    equipment: '专用综合房门禁',
+                    state: '未处理'
+                }, {
+                    number: '03',
+                    CTname: '深鹏达电网科技有限公司',
+                    grade: '紧急',
+                    describe: '专用综合房电压异常',
+                    occurrenceTime: '2018.08.03 18:32:12',
+                    equipment: '专用综合房门禁',
+                    state: '未处理'
+                }, {
+                    number: '01',
+                    CTname: '深鹏达电网科技有限公司',
+                    grade: '紧急',
+                    describe: '专用综合房电压异常',
+                    occurrenceTime: '2018.08.03 18:32:12',
+                    equipment: '专用综合房门禁',
+                    state: '未处理'
+                }, ]
+                //后台数据
+                this.total = 20;
+                //后台请求时间
+                this.timeNum = setTimeout(() => {
+                    this.loading = false;
                 }, 500)
-            },
-            //分页计算
-            computeArr() {
-                // 页数，如果有小数，只取整数部分
-                let pageNum = Number(String(this.total / this.pageSize).split(".")[0]);
-                // 定义一个空数组
-                let newArr = [];
-                // // 遍历获取的数据，每次遍历都把数组的0位置开始截取，截取数量为每页显示的数量
-                for (let i = 0; i < pageNum; i++) {
-                    newArr.push(this.gridData.splice(0, this.pageSize));
-                }
-                // // 判断剩余的数据有没有小于每一页的数量，如果小于，就把剩余的数据放进newArr数组
-                if (this.gridData.length < this.pageSize) {
-                    newArr.push(this.gridData.splice(0, this.gridData.length));
-                }
-                // // 将新的数组赋给gridData[],用来渲染页面
-                this.gridData = newArr;
-                // // 第一次进入页面显示this.gridData[]数组的第一个元素
-                this.tableInfoList = this.gridData[0]
-                this.loading = false;
             },
             //点击分页
             handleCurrentChange(currentPage) {
-                this.tableInfoList = this.gridData[currentPage - 1];
-            }
+                this.listQuery.page = currentPage
+                this.getHotMovieList()
+            },
+            handleFilter() {
+                this.listQuery.page = 1
+                this.getHotMovieList()
+            },
         },
     }
 </script>

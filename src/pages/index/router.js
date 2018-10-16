@@ -93,6 +93,13 @@ export const constantRouterMap = [{
                 ]
             },
             {
+                path: 'account-mag',
+                name: '账号管理',
+                component: () =>
+                    import ('@/pages/index/views/system-settings/account-mag/index'),
+                meta: { title: '账号管理' }
+            },
+            {
                 path: 'electrical-mag',
                 name: '电工管理',
                 component: () =>

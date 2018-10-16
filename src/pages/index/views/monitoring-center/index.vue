@@ -31,7 +31,7 @@
             <div id="container">
                 <!--客户按钮-->
                 <div class="box_map_customer_list"  @click="openCustomerPop">客户列表 > ></div>
-                <customer-pop :dialogTableVisible.sync="dialogTableVisible"  class="customer_pop" ref='customerpop'></customer-pop>
+                <customer-pop :dialogTableVisible.sync="dialogTableVisible"  class="common" ref='customerpop'></customer-pop>
                 <!--实时总负荷，实时总电量-->
                 <div class="box_map_load_electric">
                     <div class="box_map_load_electric_load">
@@ -88,7 +88,7 @@
             <p ref="testMap">点击移动地图香景</p>
             <!--告警事件-->
             <i class="el-icon-arrow-right"  @click="openAlarmEventsPop"></i>
-            <alarm-events-pop  :alarmEvents.sync="alarmEvents"  class="customer_pop " ref='alarmeventspop'></alarm-events-pop>
+            <alarm-events-pop  :alarmEvents.sync="alarmEvents"  class="common " ref='alarmeventspop'></alarm-events-pop>
         </div>
     </div>
 </template>

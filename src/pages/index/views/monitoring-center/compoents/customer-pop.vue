@@ -1,21 +1,19 @@
 <template>
   <el-dialog title="客户列表" :visible.sync="dialogTableVisible" :before-close='closeDialog'>
-    <el-form ref="form" :model="sizeForm" label-width="80px" size="mini" class="customer-list">
+    <el-form ref="form" :model="listQuery" label-width="80px" size="mini" class="customer-list">
       <el-form-item label="客户类型 :">
-        <el-select v-model="sizeForm.region" placeholder="全部">
-          <el-option label="区域一" value="shanghai"></el-option>
-          <el-option label="区域二" value="beijing"></el-option>
+        <el-select v-model="listQuery.type" placeholder="全部">
+          <el-option v-for="item in typeOptions" :key="item.id" :label="item.label" :value="item.id" />
         </el-select>
       </el-form-item>
       <el-form-item label="所属中心 :">
-        <el-select v-model="sizeForm.region" placeholder="所有">
-          <el-option label="区域一" value="shanghai"></el-option>
-          <el-option label="区域二" value="beijing"></el-option>
+        <el-select v-model="listQuery.center" placeholder="所有">
+          <el-option v-for="item in centerOptions" :key="item.id" :label="item.label" :value="item.id" />
         </el-select>
       </el-form-item>
       <el-form-item>
-        <el-input placeholder="请输入关键字" clearable></el-input>
-        <el-button type="success">搜索</el-button>
+        <el-input placeholder="请输入关键字" clearable v-model="listQuery.keyword" @keyup.enter.native="handleFilter"></el-input>
+        <el-button type="success" @click="handleFilter" size="small">搜索</el-button>
       </el-form-item>
     </el-form>
     <el-table :data="tableInfoList" v-loading='loading'>
@@ -27,16 +25,17 @@
       <el-table-column property="CTpeople" label="联系人" align="center"></el-table-column>
       <el-table-column label="操作">
         <template slot-scope="scope">
-                      <el-button type="text" size="small">地图</el-button>
-                      <el-button type="text" size="small">更多</el-button>
+                                <el-button type="text" size="small">地图</el-button>
+                                <el-button type="text" size="small">更多</el-button>
 </template>
       </el-table-column>
     </el-table>
     <div class="block">
       <span class="demonstration">共{{total}}条数据</span>
-      <el-pagination background layout="prev, pager, next"   :current-page="currentPage"
-      :page-size="pageSize" 
+      <el-pagination  v-show="total>0"  background layout="prev, pager, next"  
       @current-change="handleCurrentChange"
+      :page-size="listQuery.limit"
+      :current-page="listQuery.page"
       :total="total"> </el-pagination>
     </div>
   </el-dialog>
@@ -48,18 +47,45 @@
     props: ['dialogTableVisible'],
     data() {
       return {
-        sizeForm: {
-          region: '',
+        //请求和查询参数分页
+        listQuery: {
+          page: 1, //请求哪一页
+          limit: 3, //请求每页条数
+          type: undefined,
+          center: undefined,
+          keyword: '',
         },
-        gridData: [
-        ],
+        typeOptions: [{
+          label: '所有',
+          id: '0'
+        }, {
+          label: '未处理',
+          id: '1'
+        }, {
+          label: '已解决',
+          id: '2'
+        }, {
+          label: '已忽略',
+          id: '3'
+        }],
+        centerOptions: [{
+          label: '所有',
+          id: '0'
+        }, {
+          label: '严重',
+          id: '1'
+        }, {
+          label: '紧急',
+          id: '2'
+        }, {
+          label: '普通',
+          id: '3'
+        }],
         //分页
-        total: 0,//总数据
-        currentPage: 1,//当前页
+        total: null, //总数据
         tableInfoList: [],
-        pageSize: 3, //每页显示的数量
         loading: true,
-        timeNum: ''//清除定时器
+        timeNum: '' //清除定时器
       }
     },
     watch: {},
@@ -67,77 +93,56 @@
       //关闭清除数据
       closeDialog(done) {
         this.$emit('update:dialogTableVisible', false)
-        this.total=0;
-        this.loading=true;
+        this.total = 0;
         clearTimeout(this.timeNum)
       },
       //分页请求数据数据
       getHotMovieList() {
         //请求获取数据列表
+        this.loading = true
+        this.tableInfoList = [{
+          number: '01',
+          CTname: '深鹏达电网科技有限公司',
+          CTtype: '普通会员',
+          CTcenter: '福田',
+          CTaddress: '深圳市福田区莲花路2075号香丽大厦裙楼三楼',
+          CTpeople: '黎明-17503091882',
+        }, {
+          number: '01',
+          CTname: '深鹏达电网科技有限公司',
+          CTtype: '普通会员',
+          CTcenter: '福田',
+          CTaddress: '深圳市福田区莲花路2075号香丽大厦裙楼三楼',
+          CTpeople: '黎明-17503091882',
+        }, {
+          number: '01',
+          CTname: '深鹏达电网科技有限公司',
+          CTtype: '普通会员',
+          CTcenter: '福田',
+          CTaddress: '深圳市福田区莲花路2075号香丽大厦裙楼三楼',
+          CTpeople: '黎明-17503091882',
+        }, {
+          number: '01',
+          CTname: '深鹏达电网科技有限公司',
+          CTtype: '普通会员',
+          CTcenter: '福田',
+          CTaddress: '深圳市福田区莲花路2075号香丽大厦裙楼三楼',
+          CTpeople: '黎明-17503091882',
+        }, ]
+        this.total = 10
         this.timeNum = setTimeout(_ => {
-          this.gridData = [{
-            number: '01',
-            CTname: '深鹏达电网科技有限公司',
-            CTtype: '普通会员',
-            CTcenter: '福田',
-            CTaddress: '深圳市福田区莲花路2075号香丽大厦裙楼三楼',
-            CTpeople: '黎明-17503091882',
-          }, {
-            number: '01',
-            CTname: '深鹏达电网科技有限公司',
-            CTtype: '普通会员',
-            CTcenter: '福田',
-            CTaddress: '深圳市福田区莲花路2075号香丽大厦裙楼三楼',
-            CTpeople: '黎明-17503091882',
-          }, {
-            number: '01',
-            CTname: '深鹏达电网科技有限公司',
-            CTtype: '普通会员',
-            CTcenter: '福田',
-            CTaddress: '深圳市福田区莲花路2075号香丽大厦裙楼三楼',
-            CTpeople: '黎明-17503091882',
-          }, {
-            number: '01',
-            CTname: '深鹏达电网科技有限公司',
-            CTtype: '普通会员',
-            CTcenter: '福田',
-            CTaddress: '深圳市福田区莲花路2075号香丽大厦裙楼三楼',
-            CTpeople: '黎明-17503091882',
-          }, ]
-          this.total = this.gridData.length;
-          this.computeArr();
+          this.loading = false;
         }, 500)
-
-
-
-
-        
-      },
-      //分页计算
-      computeArr() {
-        // 页数，如果有小数，只取整数部分
-        let pageNum = Number(String(this.total / this.pageSize).split(".")[0]);
-        // 定义一个空数组
-        let newArr = [];
-        // // 遍历获取的数据，每次遍历都把数组的0位置开始截取，截取数量为每页显示的数量
-        for (let i = 0; i < pageNum; i++) {
-          newArr.push(this.gridData.splice(0, this.pageSize));
-        }
-        // // 判断剩余的数据有没有小于每一页的数量，如果小于，就把剩余的数据放进newArr数组
-        if (this.gridData.length < this.pageSize) {
-          newArr.push(this.gridData.splice(0, this.gridData.length));
-        }
-        // // 将新的数组赋给gridData[],用来渲染页面
-        this.gridData = newArr;
-        // // 第一次进入页面显示this.gridData[]数组的第一个元素
-        this.tableInfoList = this.gridData[0]
-        this.loading = false;
-
       },
       //点击分页
       handleCurrentChange(currentPage) {
-        this.tableInfoList = this.gridData[currentPage - 1];
-      }
+        this.listQuery.page = currentPage
+        this.getHotMovieList()
+      },
+      handleFilter() {
+        this.listQuery.page = 1
+        this.getHotMovieList()
+      },
     },
   }
 </script>
