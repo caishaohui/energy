@@ -1,21 +1,23 @@
 <template>
-  <div class="center-mag">
-    <div class="center-title ">
-      <el-button type="primary" icon="el-icon-plus" size="small">新增</el-button>
-    </div>
-    <el-table :data="centertableList" v-loading='loading'>
-      <el-table-column property="CTnumber" label="序号" align="center" width="80"></el-table-column>
-      <el-table-column property="CTname" label="中心名称" align="center" width="220"></el-table-column>
-      <el-table-column property="CTaddress" label="中心地址" align="center" width="170"></el-table-column>
-      <el-table-column property="CTphoner" label="中心电话" align="center" width="120"></el-table-column>
-      <el-table-column property="CTpeople" label="中心负责人" align="center" width="320"></el-table-column>
-      <el-table-column property="PeoplePhone" label="负责人电话" align="center"></el-table-column>
-      <el-table-column label="操作">
-        <template slot-scope="scope">
-                                          <el-button type="text" size="small">编辑</el-button>
+  <div class="app-container" style="height:100%">
+    <div  class="common container-body">
+      <div class="center-title">
+        <el-button type="primary" icon="el-icon-plus" size="small">新增</el-button>
+      </div>
+      <el-table :data="centertableList" v-loading='loading'  element-loading-text="加载中">
+        <el-table-column property="CTnumber" label="序号" align="center" width='100'></el-table-column>
+        <el-table-column property="CTname" label="中心名称" align="center" ></el-table-column>
+        <el-table-column property="CTaddress" label="中心地址" align="center" ></el-table-column>
+        <el-table-column property="CTphoner" label="中心电话" align="center"></el-table-column>
+        <el-table-column property="CTpeople" label="中心负责人" align="center" ></el-table-column>
+        <el-table-column property="PeoplePhone" label="负责人电话" align="center"></el-table-column>
+        <el-table-column label="操作"  align="center">
+          <template slot-scope="scope">
+                <el-button type="text" size="small">编辑</el-button>
 </template>
       </el-table-column>
     </el-table>
+    </div>
   </div>
 </template>
 
@@ -69,6 +71,3 @@
   }
 </script>
 
-<style rel="stylesheet/scss" lang="scss" scoped>
-
-</style>

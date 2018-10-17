@@ -20,8 +20,9 @@ html {
     height: 100%;
     box-sizing: border-box;
 }
-body{
-    font-size:14px;
+
+body {
+    font-size: 14px;
 }
 
 #app {
@@ -78,4 +79,54 @@ a:hover {
 
 .app-container {
     padding: 0.2rem;
+    background: $bodyBG;
+}
+
+.container-body {
+    height: 100%;
+    background: #fff;
+    padding: 0 0.32rem;
+}
+
+//中心管理 和账号管理
+.center-title {
+    height: 72px;
+    display: flex;
+    justify-content: flex-end;
+    -webkit-justify-content: flex-end;
+    align-items: center;
+    .el-button {
+        background: $menuHover;
+    }
+}
+
+//账号管理
+.account-mag.center-title {
+    padding: 0;
+    justify-content: flex-start;
+    .el-form {
+        width: 100%;
+        padding: 20px 0 16px 0px;
+        .el-form-item .el-form-item__label {
+            height: 40px;
+            line-height: 40px;
+        }
+        .el-form-item:nth-of-type(3) {
+            .el-form-item__content {
+                margin-left: 0 !important;
+                position: relative;
+            }
+            .el-button {
+                width: 70px;
+                position: absolute;
+                left: 167px;
+                top: 4px;
+            }
+        }
+        .el-form-item:last-of-type {
+            .el-form-item__content {
+                margin-right: 0 !important;
+            }
+        }
+    }
 }

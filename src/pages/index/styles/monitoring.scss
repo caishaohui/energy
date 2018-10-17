@@ -1,195 +1,190 @@
-li,ul{
-  list-style: none;
-  margin-left: 0px;
-  padding: 0px;
+li,
+ul {
+    list-style: none;
+    margin-left: 0px;
+    padding: 0px;
 }
-html{
 
+html {}
+
+.clear {
+    clear: both;
 }
-.clear{
-  clear: both;
-}
-.app-container{
-  background: #e4eaf6;
-  height:calc(100vh - 64px);
 
-  #mapInfowindow{
-    background: red;
-  }
-  //客户 电工列表
-  .customer-box{
-    box-sizing: border-box;
-    padding:0.25rem;
-    background: #ffffff;
-    width:15%;
-    height: 100%;
-    float: left;
-  }
-
-  //地图
-  .box_map{
-    float: left;
-    margin-left: 0.2rem;
-    width:62.5%;
-    height: 100%;
-    &_customer_list{
-      border-radius: 4px;
-      z-index: 999;
-      position: absolute;
-      top:15px;
-      left: 20px;
-      background: rgba(0,0,0,0.7);
-      color: white;
-      padding: 8px 15px;
-      cursor: pointer;
+.app-container {
+    height: calc(100vh - 64px);
+    #mapInfowindow {
+        background: red;
     }
-    &_load_electric{
-      top:15px;
-      z-index: 999;
-      border-radius: 4px;
-      position: absolute;
-      right: 20px;
-      background: rgba(0,0,0,0.7);
-      padding: 8px 15px;;
-      >div{
-        display: inline-block;
-        position: relative;
-        margin-left:10px;
-        >img{
-          float: left;
-        }
-        >span{
-          color: white;
-          margin-left: 5px;
-        }
-      }
-    }
-    #container{
-      width: 100%;
-      height: 100%;
-      position: relative;
-      .total_box{
-        width: 100%;
-        //z-index: 99999;
-        //position: absolute;
-        bottom: 0px;
-        >div{
-          position: absolute;
-          border-radius: 4px;
-          //float: left;
-          width: 3.2rem;
-          height:1.2rem;
-          z-index: 999;
-          box-sizing: border-box;
-          padding: 0.20rem;
-          bottom: 0px;
-          >div{
-            float: left;
-            >span{
-              display: block;
-              color: white;
-            }
-            >span:nth-child(1){
-              font-size:0.24rem;
-            }
-            >span:nth-child(2){
-
-            }
-          }
-          //>div:nth-child(2){
-            //float: right;
-            >img{
-              //margin-right: 300px;
-              float: right;
-              width: 0.80rem;
-              height: 0.80rem;
-            }
-          //}
-        }
-        >div:first-of-type{
-          //background: #cf6c8c ;
-          background: rgba(226,78,104,0.75);
-          left: 0px;
-        }
-        >div:nth-child(2){
-          background: rgba(70,90,211,0.75);
-          left: 50%;
-          transform: translateX(-50%);
-        }
-        >div:nth-child(3){
-          right: 0px;
-          background: rgba(70,90,211,0.75);
-        }
-      }
-    }
-  }
-
-  //任务——警告
-  .box_taskError{
-    width: 20%;
-    //background: red;
-    height: 100%;
-    float: right;
-
-    //任务动态样式
-    .box_task{
-      padding: 0  20px;
-      background: #FAFAFA;
-      &_title{
+    //客户 电工列表
+    .customer-box {
         box-sizing: border-box;
-        &_sign{
-          width: 4px;
-          height: 18px;
-          display: inline-block;
-          //line-height: 50px;
-          background: #3DB4E8;
-          margin-right: 10px;
-          transform: translateY(50%);
-          -webkit-transform: translateY(50%);
-          float: left;
-          margin-top: 8px;
-        }
-       p{
-         display: inline-block;
-         font-size: 16px;
-         font-weight: bold;
-       }
-        img{
-          float: right;
-          transform: translateY(50%);
-          -webkit-transform: translateY(50%);
-        }
-      }
-    }
-    .box_task_content{
-      li{
-        border-bottom: 1px solid #E8E8E8 ;
-        margin-bottom: 10px;
-        >img{
-          float: left;
-        }
-      }
-      &_site{
-        padding: 10px 0px;
-        display: inline-block;
+        padding: 0.25rem;
+        background: #ffffff;
+        width: 15%;
+        height: 100%;
         float: left;
-        margin-left: 10px;
-        >div:nth-child(1){
-          padding: 0px;
-          font-size: 18px;
-          transform: translateY(-9px);
-        }
-      }
-      &_achieve{
-        display: inline-block;
-        float: right;
-      }
     }
-  }
+    //地图
+    .box_map {
+        float: left;
+        margin-left: 0.2rem;
+        width: 62.5%;
+        height: 100%;
+        &_customer_list {
+            border-radius: 4px;
+            z-index: 999;
+            position: absolute;
+            top: 15px;
+            left: 20px;
+            background: rgba(0, 0, 0, 0.7);
+            color: white;
+            padding: 8px 15px;
+            cursor: pointer;
+        }
+        &_load_electric {
+            top: 15px;
+            z-index: 999;
+            border-radius: 4px;
+            position: absolute;
+            right: 20px;
+            background: rgba(0, 0, 0, 0.7);
+            padding: 8px 15px;
+            ;
+            >div {
+                display: inline-block;
+                position: relative;
+                margin-left: 10px;
+                >img {
+                    float: left;
+                }
+                >span {
+                    color: white;
+                    margin-left: 5px;
+                }
+            }
+        }
+        #container {
+            width: 100%;
+            height: 100%;
+            position: relative;
+            .total_box {
+                width: 100%;
+                //z-index: 99999;
+                //position: absolute;
+                bottom: 0px;
+                >div {
+                    position: absolute;
+                    border-radius: 4px;
+                    //float: left;
+                    width: 3.2rem;
+                    height: 1.2rem;
+                    z-index: 999;
+                    box-sizing: border-box;
+                    padding: 0.20rem;
+                    bottom: 0px;
+                    >div {
+                        float: left;
+                        >span {
+                            display: block;
+                            color: white;
+                        }
+                        >span:nth-child(1) {
+                            font-size: 0.24rem;
+                        }
+                        >span:nth-child(2) {}
+                    }
+                    //>div:nth-child(2){
+                    //float: right;
+                    >img {
+                        //margin-right: 300px;
+                        float: right;
+                        width: 0.80rem;
+                        height: 0.80rem;
+                    }
+                    //}
+                }
+                >div:first-of-type {
+                    //background: #cf6c8c ;
+                    background: rgba(226, 78, 104, 0.75);
+                    left: 0px;
+                }
+                >div:nth-child(2) {
+                    background: rgba(70, 90, 211, 0.75);
+                    left: 50%;
+                    transform: translateX(-50%);
+                }
+                >div:nth-child(3) {
+                    right: 0px;
+                    background: rgba(70, 90, 211, 0.75);
+                }
+            }
+        }
+    }
+    //任务——警告
+    .box_taskError {
+        width: 20%;
+        //background: red;
+        height: 100%;
+        float: right;
+        //任务动态样式
+        .box_task {
+            padding: 0 20px;
+            background: #FAFAFA;
+            &_title {
+                box-sizing: border-box;
+                &_sign {
+                    width: 4px;
+                    height: 18px;
+                    display: inline-block;
+                    //line-height: 50px;
+                    background: #3DB4E8;
+                    margin-right: 10px;
+                    transform: translateY(50%);
+                    -webkit-transform: translateY(50%);
+                    float: left;
+                    margin-top: 8px;
+                }
+                p {
+                    display: inline-block;
+                    font-size: 16px;
+                    font-weight: bold;
+                }
+                img {
+                    float: right;
+                    transform: translateY(50%);
+                    -webkit-transform: translateY(50%);
+                }
+            }
+        }
+        .box_task_content {
+            li {
+                border-bottom: 1px solid #E8E8E8;
+                margin-bottom: 10px;
+                >img {
+                    float: left;
+                }
+            }
+            &_site {
+                padding: 10px 0px;
+                display: inline-block;
+                float: left;
+                margin-left: 10px;
+                >div:nth-child(1) {
+                    padding: 0px;
+                    font-size: 18px;
+                    transform: translateY(-9px);
+                }
+            }
+            &_achieve {
+                display: inline-block;
+                float: right;
+            }
+        }
+    }
 }
+
 //.customer{
 //  width: 30%;
 //  height: 100%;
 //}
-
-

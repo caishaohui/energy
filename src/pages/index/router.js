@@ -76,21 +76,6 @@ export const constantRouterMap = [{
                     import ('@/pages/index/views/system-settings/customer-mag/index'), // Parent router-view
                 name: 'customer-mag',
                 meta: { title: '客户管理' },
-                children: [{
-                        path: 'customer-list',
-                        component: () =>
-                            import ('@/pages/index/views/system-settings/customer-mag/customer-list'),
-                        name: 'customer-list',
-                        meta: { title: '客户列表' }
-                    },
-                    {
-                        path: 'menu1-3',
-                        component: () =>
-                            import ('@/pages/index/views/system-settings/customer-mag/menu1-3'),
-                        name: 'menu1-3',
-                        meta: { title: 'menu1-3' }
-                    }
-                ]
             },
             {
                 path: 'account-mag',
@@ -112,6 +97,28 @@ export const constantRouterMap = [{
                 component: () =>
                     import ('@/pages/index/views/system-settings/OPS-mag/index'),
                 meta: { title: '运维管理' }
+            },
+            {
+                path: 'equipment-mag',
+                component: () =>
+                    import ('@/pages/index/views/system-settings/equipment-mag/index'), // Parent router-view
+                name: 'equipment-mag',
+                meta: { title: '设备管理' },
+                children: [{
+                        path: 'equipment-message',
+                        component: () =>
+                            import ('@/pages/index/views/system-settings/equipment-mag/equipment-message'),
+                        name: 'equipment-message',
+                        meta: { title: '设备信息' }
+                    },
+                    {
+                        path: 'system-chart',
+                        component: () =>
+                            import ('@/pages/index/views/system-settings/equipment-mag/system-chart'),
+                        name: 'system-chart',
+                        meta: { title: '系统接线图' }
+                    }
+                ]
             },
         ]
     },

@@ -1,4 +1,5 @@
 <template>
+
     <el-dialog title="告警事件" :visible.sync="alarmEvents" :before-close='closeDialog'>
         <el-form ref="form" :model="listQuery" label-width="80px" size="mini" class="alarmEvents">
             <el-form-item label="等级 :">
@@ -24,21 +25,23 @@
                 <el-button type="success"  size="small">批量处理</el-button>
             </el-form-item>
         </el-form>
-        <el-table id="rebateSetTable" :data="tableInfoList" ref="multipleTable" v-loading='loading' @selection-change="handleSelectionChange">
+        <div class="container-body">
+        <el-table id="rebateSetTable" :data="tableInfoList" ref="multipleTable"  element-loading-text="加载中" v-loading='loading' @selection-change="handleSelectionChange">
             <el-table-column type="selection" width="35"></el-table-column>
             <el-table-column property="number" label="编号" align="center" width="80"></el-table-column>
-            <el-table-column property="CTname" label="客户名称" align="center"></el-table-column>
+            <el-table-column property="CTname" label="客户名称" align="center" width="200"></el-table-column>
             <el-table-column property="grade" label="等级" align="center"></el-table-column>
             <el-table-column property="describe" label="描述" align="center"></el-table-column>
             <el-table-column property="occurrenceTime" label="发生时间" align="center"></el-table-column>
             <el-table-column property="equipment" label="设备" align="center"></el-table-column>
             <el-table-column property="state" label="状态" align="center"></el-table-column>
-            <el-table-column label="操作">
+            <el-table-column label="操作" align="center">
                 <template slot-scope="scope">
                                                                         <el-button type="text" size="small">处理</el-button>
 </template>
             </el-table-column>
     </el-table>
+    </div>
     <div class="block">
       <span class="demonstration">共{{total}}条数据</span>
       <el-pagination v-show="total>0"  background layout="prev, pager, next"   

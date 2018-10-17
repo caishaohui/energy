@@ -107,9 +107,11 @@
          }
      }
      .el-table {
-         padding: 0 0.32rem;
          thead {
              color: rgba(0, 0, 0, 0.85);
+             tr {
+                 height: 0.54rem;
+             }
          }
          .el-table__header-wrapper {
              border-radius: 4px 4px 0 0;
