@@ -10,7 +10,7 @@
                     <el-input
                             placeholder="请输入关键字搜索"
                             v-model="input23">
-                        <i slot="suffix" class="el-input__icon el-icon-search " ></i>
+                        <i slot="suffix" class="el-input__icon el-icon-search "></i>
                     </el-input>
                     <!--客户树形-->
                     <div>
@@ -30,8 +30,9 @@
             <div id="my-list" style="display: none"></div>
             <div id="container">
                 <!--客户按钮-->
-                <div class="box_map_customer_list"  @click="openCustomerPop">客户列表 > ></div>
-                <customer-pop :dialogTableVisible.sync="dialogTableVisible"  class="common" ref='customerpop'></customer-pop>
+                <div class="box_map_customer_list" @click="openCustomerPop">客户列表 > ></div>
+                <customer-pop :dialogTableVisible.sync="dialogTableVisible" class="common"
+                              ref='customerpop'></customer-pop>
                 <!--实时总负荷，实时总电量-->
                 <div class="box_map_load_electric">
                     <div class="box_map_load_electric_load">
@@ -72,7 +73,7 @@
                     </div>
                 </div>
             </div>
-            <div id="panel">
+            <div id="panel" >
                 <div id="intro">
                 </div>
             </div>
@@ -81,43 +82,57 @@
         <!--右侧侧边告警-->
         <div class="box_taskError">
             <taskModule></taskModule>
+            <errorModule
+                    :mapSign = "mapSign"
+                    :markerSign = "markerSign"
+                    :markerSite = "markerSite"
+                    :tests = "tests"
+                    @markerErrorValue="markerErrorValue"
+            ></errorModule>
+
+
             <ul>
-                <li style="cursor: pointer;" v-for="(item,index) in errorData" @click = "errorBtn(item)">{{item.id}}</li>
+                <li style="cursor: pointer;" v-for="(item,index) in errorData">{{item.id}}</li>
             </ul>
-            <p ref="moveMap">点击移动地图福田</p>
-            <p ref="testMap">点击移动地图香景</p>
+            <!--<p @click="testMap">点击移动地图香景</p>-->
             <!--告警事件-->
-            <i class="el-icon-arrow-right"  @click="openAlarmEventsPop"></i>
-            <alarm-events-pop  :alarmEvents.sync="alarmEvents"  class="common " ref='alarmeventspop'></alarm-events-pop>
+            <i class="el-icon-arrow-right" @click="openAlarmEventsPop"></i>
+            <alarm-events-pop :alarmEvents.sync="alarmEvents" class="common " ref='alarmeventspop'></alarm-events-pop>
+        </div>
+
+        <div id="cj">
+            <span @click="aap">窗口</span>
+            <div>qqq</div>
         </div>
     </div>
 </template>
 <script>
-    import mapIcon from  '@/assets/icon/mapSite.svg'
-    import errorIcon from  '@/assets/icon/mapError.svg'
-    import recordIcon from  '@/assets/icon/mapRecord.svg'
-    import facilityIcon from  '@/assets/icon/mapFacility.svg'
-    import loadIcon from  '@/assets/icon/mapLoad.png'
-    import electricIcon from  '@/assets/icon/mapElectric.png'
+    import mapIcon from '@/assets/icon/mapSite.svg'
+    import errorIcon from '@/assets/icon/mapError.svg'
+    import recordIcon from '@/assets/icon/mapRecord.svg'
+    import facilityIcon from '@/assets/icon/mapFacility.svg'
+    import loadIcon from '@/assets/icon/mapLoad.png'
+    import electricIcon from '@/assets/icon/mapElectric.png'
     import mapCenterIcon from '@/assets/icon/mapCenterIcon.png'
     import mapElectricianIcon from '@/assets/icon/mapElectricianIcon.png'
     import mapCustomerIcon from '@/assets/icon/mapCustomerIcon.png'
     import CustomerPop from './compoents/customer-pop.vue'
     import AlarmEventsPop from '@/pages/index/views/monitoring-center/compoents/alarm-events-pop'
     import taskModule from '@/pages/index/views/monitoring-center/compoents/task-module'
-
+    import errorModule from '@/pages/index/views/monitoring-center/compoents/error-module'
     export default {
         data() {
             return {
+                tests:'213',
                 activeName: 'first',// 客户，电工分页
-                input23:'',//客户搜索
+                input23: '',//客户搜索
                 data: [],//客户，树形结构数据
                 defaultProps: {
                     children: 'children',
                     label: 'label'
                 },
-                mapData:'', //客户数据
-                errorData:'', //警告列表数据
+                mapData: '', //客户数据
+                errorData: '', //警告列表数据
                 //以下地图图标
                 mapIcon,
                 errorIcon,
@@ -129,340 +144,268 @@
                 mapElectricianIcon,
                 mapCustomerIcon,
                 dialogTableVisible: false,
-                alarmEvents:false,
+                alarmEvents: false,
+
+                markerSign: '',   //初始化标记
+                mapSign: '',      //初始化地图
+                markerSite: '',   // 点击地址位置查找到客户的标记
+                markerError: '',  // 点击警告的标记
             }
         },
         methods: {
+            aap(){
+                alert("123")
+            },
             // jump(){
             //   location.assign('./customer.html');
             // }
             handleClick(tab, event) {  //分页
-                console.log(tab, event);
             },
-            handleNodeClick(data) {    //树形结构
-                if (data.label == '福田区'){
-                    var key = 'children';
-                    data[key] = [{
-                        id: '香丽大厦',
-                        position: [114.039864,22.551399],
-                        desc: 'tb0',
-                        label:'香丽大厦',
-                        person:'蔡少辉',
-                    }];
-                }
-                if (data.label == '龙岗区') {
-                    var key = 'children';
-                    data[key] = [{
-                        id: '龙岗中心城',
-                        position: [114.237209,22.722198],
-                        label:'龙岗中心城',
-                        desc: 'tb1',
-                        person:'康赞',
-                    }];
-                }
-                $('#'+data.desc).click(function () {
-                });
-                $('#'+data.desc).click();
-                console.log($('#'+'data.desc'));
+            markerErrorValue:function (data) {
+                // console.log(data)
+                this.markerError = data
             },
-            getCustomerData(){
+            handleNodeClick(data) {
                 var _this = this;
-                //创建地图
-                var map = new AMap.Map('container', {
-                    zoom: 9,
-                });
-                map.setFitView();
-                //关闭信息窗体
-                function closeInfoWindow() {
-                    map.clearInfoWindow();
-                }
-                AMapUI.loadUI(['misc/MarkerList','overlay/SimpleInfoWindow'], function(MarkerList,SimpleInfoWindow) {
-                    // <!-- 重点参数：getDataId，getPosition，getMarker，getInfoWindow，getListElement -->
-                    // <!-- 重点代码: markerList.render -->
-
-                    // openInfoWin();
-                    var markerList = new MarkerList({
-                        //关联的map对象
-                        map: map,
-                        //列表的dom容器的id
-                        listContainer: 'my-list',
-                        //选中状态（通过点击列表或者marker）时在Marker和列表节点上添加的class，可以借此编写css控制选中时的展示效果
-                        selectedClassNames: 'selected',
-                        //返回数据项的Id
-                        getDataId: function(dataItem, index) {
-                            //index表示该数据项在数组中的索引位置，从0开始，如果确实没有id，可以返回index代替
-                            return dataItem.id;
-                        },
-                        //返回数据项的位置信息，需要是AMap.LngLat实例，或者是经纬度数组，比如[116.789806, 39.904989]
-                        getPosition: function(dataItem) {
-                            return dataItem.position;
-                        },
-                        //返回数据项对应的Marker
-                        getMarker: function(dataItem, context, recycledMarker) {
-                            //marker的标注内容
-                            var content = dataItem.markerLabel;
-                            var label = {
-                                offset: new AMap.Pixel(16, 18), //修改label相对于marker的位置
-                                content: content
-                            };
-                            //存在可回收利用的marker
-                            if (recycledMarker) {
-                                //直接更新内容返回
-                                recycledMarker.setLabel(label);
-                                return recycledMarker;
-                            }
-                            //返回一个新的Marker
-                            return new AMap.Marker({
-                                label: label,
-                                title:data.id,
-                                icon: new AMap.Icon({
-                                    size: new AMap.Size(40, 60),  //图标大小
-                                    image: _this.mapIcon,
-                                })
-                            });
-                        },
-                        //返回数据项对应的infoWindow
-                        getInfoWindow: function(dataItem, context, recycledInfoWindow){
-                            var tpl ="<div id='mapInfowindow'>" +
-                                "<div><p><%- dataItem.company %>：<%- dataItem.infoWinContent %></p><p>联系人：<%- dataItem.person %><%- dataItem.infoWinContent %></p><p>联系电话:<%- dataItem.phone %></p></div>"+
-                                "<span class='striping'></span>"+
-                                "<div class='infowindowload'><img src='"+_this.loadIcon+"' style='width: 20px;height: 20px'><span>123</span></div>"+
-                                "<div class='infowindowload'><img src='"+_this.electricIcon+"' style='width: 20px;height: 20px'><span>456</span></div>"+
-                                "<div class='infowindowfour'>" +
-                                "<div><img src='"+_this.recordIcon+"' style='width: 50px;height: 50px'><div>运维记录</div></div>"+
-                                "<div><img src='"+_this.errorIcon+"' style='width: 50px;height: 50px'><div>告警事件</div></div>"+
-                                "<div><img src='"+_this.facilityIcon+"' style='width: 50px;height: 50px'><div>设备列表</div></div>"+
-                                "<div><div>更多闲情</div></div>"+
-                                "</div>"+
-                                "</div>";
-                            //MarkerList.utils.template支持underscore语法的模板
-                            var content = MarkerList.utils.template(tpl, {
-                                dataItem: dataItem,
-                                dataIndex: context.index
-                            });
-                            if (recycledInfoWindow) {
-                                //存在可回收利用的infoWindow, 直接更新内容返回
-                                recycledInfoWindow.setContent(content);
-                                return recycledInfoWindow;
-                            }
-                            //返回一个新的InfoWindow
-                            return new AMap.InfoWindow({
-                                offset: new AMap.Pixel(0, -30),
-                                content: content
-                            });
-                        },
-                        //返回数据项对应的列表节点
-                        getListElement: function(dataItem, context, recycledListElement) {
-                            var tpl = "<p class='aa' id='tb"+context.index+"'><%- dataItem.id %><p>";
-                            var con = '<p >'+'111111'+'</p>';
-                            var content = MarkerList.utils.template(tpl, {
-                                dataItem: dataItem,
-                                dataIndex: context.index
-                            });
-                            if (recycledListElement) {
-                                //存在可回收利用的listElement, 直接更新内容返回
-                                recycledListElement.innerHTML = content;
-                                return recycledListElement;
-                            }
-                            //返回一段html，MarkerList将利用此html构建一个新的dom节点
-                            return content;
-                        },
-                    });
-                    //监听选中改变
-                    markerList.on('selectedChanged', function(event, info) {
-                        // console.log(event, info);
-                        // map.setCenter([info.selected.position.lng, info.selected.position.lat+0.06]);
-                        console.log(info.selected.position.lng);
-                        console.log(info.selected.position.lat);
-                    });
-                    //监听Marker和ListElement上的点击
-                    markerList.on('markerClick listElementClick', function(event, record) {
-                        // console.log(event, record);
-                    });
-
-                    //构建一个数据项数组，数据项本身没有格式要求，但需要支持getDataId和getPosition
-                    // 事件的模拟，绑定另外一个事件的方法
-                    //所有的数据，，页面进来渲染所有
-                    var data =  [{
+                // 点击添加客户信息
+                if (data.label == '福田区') {
+                    var key = 'children';
+                    data[key] = [{
                         id: '香丽大厦',
-                        position: [114.039864,22.551399],
-                        desc: '0',
-                        label:'香丽大厦',
-                        company:'深鹏达电网科技有限公司',
-                        person:'蔡少辉',
-                        phone:'12345678912',
-                    },{
-                        id: '龙岗中心城',
-                        position: [114.237209,22.722198],
-                        label:'龙岗中心城',
-                        company:'广东峭函堔鑫建设工程有限公司',
-                        phone:'13556885862',
-                        desc: '1',
-                        person:'黄东文',
-                    }];
-                    //侧边栏控件数据（位置信息）
-                    var CustomerData = [{
-                        id: '深圳',
-                        label:'深圳',
-                        person:'深圳',
-                        children:[{
-                            label:'宝安区',
-                        }, {
-                            label:'罗湖区',
-                        }, {
-                            label:'福田区',
-                            children:[{
-                                label:'test'
-                            }]
-                        },{
-                            label:'龙岗区',
-                            children:[{
-                                label:'test'
-                            }]
-                        },{
-                            label:'南山区'
-                        },{
-                            label:'盐田区'
-                        },{
-                            label:'坪山区'
+                        position: [114.039864, 22.551399],
+                        desc: 'tb0',
+                        label: '香丽大厦',
+                        person: '蔡少辉',
+                    },
+                        {
+                            id: '乡景大厦',
+                            position: [114.039498, 22.552612],
+                            label: '乡景大厦',
+                            desc: 'tb1',
+                            person: '康赞',
                         }
-                        ]
-                    }];
-                    _this.data = CustomerData;
-                    _this.mapData = data;
-                    //展示该数据
+                    ];
+                }
+                // 点击客户信息显示地图窗口
+                if (data.position) {
+                    var map = this.mapSign;
+                    var markers = this.markerSign;   // 获取默认地图标记marker
+                    markers.push(this.markerError);  // 添加其他地图标价marker例如警告，任务动态
+                    markers.push(this.markerSite);
+                    map.remove(markers);             //清除其他地图标记
+                    var marker;
+                    console.log(marker);
 
-                    // 告警事件数据
-                    var errorData = [{
-                        id: '温湿度异常',
-                        position: [114.039864,22.551399],
-                        desc: '0',
-                        label:'温湿度异常',
-                        company:'深鹏达电网科技有限公司',
-                        person:'蔡少辉',
-                        phone:'12345678912',
-                    },{
-                        id: '温湿度异常',
-                        position: [114.237209,22.722198],
-                        label:'温湿度异常',
-                        company:'广东峭函堔鑫建设工程有限公司',
-                        phone:'13556885862',
-                        desc: '1',
-                        person:'黄东文',
-                    }];
-                    _this.errorData = errorData;
-                    markerList.render(data);
-                    console.log(markerList);
-                    // markerList.render(data1);
-                    // console.log(_this.$refs.errorbtn)
-                    _this.$refs.moveMap.onclick = function () {
-                        map.setCenter([114.039499,22.552602]);
-                        var data = [{
-                            id: '福田区科技中学',
-                            position: [114.040191,22.553451],
-                            desc: '0',
-                            label:'香丽大厦',
-                            company:'福田区科技中学',
-                            person:'蔡少辉',
-                            phone:'12345678912',
-                        }];
-                        markerList.render(data);
-                        console.log(markerList);
-                        // map.setCenter([114.237209,22.722198]);
-                        //返回一个新的InfoWindow
-                    };
-                    _this.$refs.testMap.onclick = function () {
-                        var data = [{
-                            id: 'aaaa',
-                            position: [114.039499,22.552602],
-                            desc: '0',
-                            label:'aaaa',
-                            company:'aaaaaaaaa',
-                            person:'aaa',
-                            phone:'aaa',
-                        }];
-                        markerList.render(data);
-                        console.log(markerList);
-                        // map.setCenter([114.039499,22.552602]);
-                        //返回一个新的InfoWindow
-                        // 114.039499,22.552602
-
-
+                    function addMarker() {
+                        marker = new AMap.Marker({
+                            position: data.position,
+                            offset: new AMap.Pixel(-13, -30),
+                        });
+                        marker.setMap(map);
                     }
-                });
+
+                    addMarker();
+                    this.markerSite = marker;
+                    AMap.event.addListener(marker, 'click', function () {
+                        infoWindow.open(map, marker.getPosition());
+                    });
+                    var infoWindow = new AMap.InfoWindow({
+                        // isCustom: true,  //使用自定义窗体
+                        content: "<div id='mapInfowindow'>" +
+                        "<div>" +
+                        "<p>" + data.label + "</p>" +
+                        "<p>联系人</p><p>联系电话</p></div>" +
+                        "<span class='striping'></span>" +
+                        "<div class='infowindowload'><img src='" + _this.loadIcon + "' style='width: 20px;height: 20px'><span>123</span></div>" +
+                        "<div class='infowindowload'><img src='" + _this.electricIcon + "' style='width: 20px;height: 20px'><span>456</span></div>" +
+                        "<div class='infowindowfour'>" +
+                        "<div><img src='" + _this.recordIcon + "' style='width: 50px;height: 50px'><div>运维记录</div></div>" +
+                        "<div><img src='" + _this.errorIcon + "' style='width: 50px;height: 50px'><div>告警事件</div></div>" +
+                        "<div><img src='" + _this.facilityIcon + "' style='width: 50px;height: 50px'><div>设备列表</div></div>" +
+                        "<div><div>更多闲情</div></div>" +
+                        "</div>" +
+                        "</div>",
+                        offset: new AMap.Pixel(16, -45)
+                    });
+                    AMap.event.addListener(marker, 'click', function () {
+                        infoWindow.open(map, marker.getPosition());
+                    });
+
+                    infoWindow.open(map, marker.getPosition());
+                    map.setFitView();
+                    // var zoom = Math.floor(Math.random() * 7) + 11; //zoom范围[11,18]
+                    // console.log(zoom);
+                    map.setZoom(15); //设置地图层级
+                    console.log(marker)
+                }
             },
-               openCustomerPop(){
-                  this.dialogTableVisible = true;
-                  this.$refs.customerpop.getHotMovieList()
-      },
-       openAlarmEventsPop(){
-          this.alarmEvents=true;
-          this.$refs.alarmeventspop.getHotMovieList()
-    },
-            errorBtn(data){
-                //返回一个新的InfoWindow
-                new AMap.InfoWindow({
-                    offset: new AMap.Pixel(0, -30),
-                    content: "<div>123</div>"
+            getCustomerData() {
+                var _this = this;
+                //所有的数据，，页面进来渲染所有
+                var data = [{
+                    id: '香丽大厦',
+                    position: [114.039864, 22.551399],
+                    desc: '0',
+                    label: '香丽大厦',
+                    company: '深鹏达电网科技有限公司',
+                    person: '蔡少辉',
+                    phone: '12345678912',
+                }, {
+                    id: '乡景大厦',
+                    position: [114.039498, 22.552612],
+                    label: '乡景大厦',
+                    company: '乡景大厦',
+                    phone: '13556885862',
+                    desc: '1',
+                    person: '黄东文',
+                }, {
+                    id: '龙岗中心城',
+                    position: [114.237209, 22.722198],
+                    label: '龙岗中心城',
+                    company: '广东峭函堔鑫建设工程有限公司',
+                    phone: '13556885862',
+                    desc: '1',
+                    person: '黄东文',
+                }];
+                //侧边栏控件数据（位置信息）
+                var CustomerData = [{
+                    id: '深圳',
+                    label: '深圳',
+                    person: '深圳',
+                    children: [{
+                        label: '宝安区',
+                    }, {
+                        label: '罗湖区',
+                    }, {
+                        label: '福田区',
+                        children: [{
+                            label: 'test'
+                        }]
+                    }, {
+                        label: '龙岗区',
+                        children: [{
+                            label: 'test'
+                        }]
+                    }, {
+                        label: '南山区'
+                    }, {
+                        label: '盐田区'
+                    }, {
+                        label: '坪山区'
+                    }
+                    ]
+                }];
+                _this.data = CustomerData;
+                _this.mapData = data;
+                //初始化地图对象，加载地图
+                var map = new AMap.Map("container", {
+                    resizeEnable: true, //是否监控地图容器尺寸变化
+                    zoom: 12, //初始地图级别
+                    center: [121.498586, 31.239637], //初始地图中心点
+                    showIndoorMap: false //关闭室内地图
                 });
+                _this.mapSign = map;
+                var infoWindow = new AMap.InfoWindow({offset: new AMap.Pixel(0, -30)});
+                var markers = [];
+                for (var i = 0, marker; i < data.length; i++) {
+                    marker = new AMap.Marker({
+                        position: data[i].position,
+                        map: map
+                    });
+                    marker.content = "<div id='mapInfowindow'>" +
+                        "<div>" +
+                        "<p>" + data[i].company + "</p>" +
+                        "<p>联系人</p><p>联系电话</p></div>" +
+                        "<span class='striping'></span>" +
+                        "<div class='infowindowload'><img src='" + _this.loadIcon + "' style='width: 20px;height: 20px'><span>123</span></div>" +
+                        "<div class='infowindowload'><img src='" + _this.electricIcon + "' style='width: 20px;height: 20px'><span>456</span></div>" +
+                        "<div class='infowindowfour'>" +
+                        "<div><img src='" + _this.recordIcon + "' style='width: 50px;height: 50px'><div>运维记录</div></div>" +
+                        "<div><img src='" + _this.errorIcon + "' style='width: 50px;height: 50px'><div>告警事件</div></div>" +
+                        "<div><img src='" + _this.facilityIcon + "' style='width: 50px;height: 50px'><div>设备列表</div></div>" +
+                        "<div><div>更多闲情</div></div>" +
+                        "</div>" +
+                        "</div>";
+                    marker.on('click', markerClick);
+                    markers.push(marker);
+                }
+                function markerClick(e) {
+                    infoWindow.setContent(e.target.content);
+                    infoWindow.open(map, e.target.getPosition());
+                }
+                map.setFitView();
+                function clearMarker() {
+                    map.remove(markers);
+                }
+                _this.markerSign = markers;
+            },
+            openCustomerPop() {
+                this.dialogTableVisible = true;
+                this.$refs.customerpop.getHotMovieList()
+            },
+            openAlarmEventsPop() {
+                this.alarmEvents = true;
+                this.$refs.alarmeventspop.getHotMovieList()
             },
         },
-        created(){
+        created() {
+
         },
-        mounted(){
+        mounted() {
             this.getCustomerData();
         },
-        components:{
+        components: {
             CustomerPop,
             AlarmEventsPop,
-            taskModule
+            taskModule,
+            errorModule
         }
     }
 </script>
-<style  class="AMap.style" lang="scss">
-    .box_map{
-        .amap-info-content{
-            width:400px ;
-            background: rgba(12,27,53,0.75);
+<style class="AMap.style" lang="scss">
+    .box_map {
+        .amap-info-content {
+            width: 400px;
+            background: rgba(12, 27, 53, 0.75);
             box-shadow: none;
             border-radius: 4px;
             color: white;
-            padding: 0  10px;
-            #mapInfowindow{
-                >div{
-                    >p{
+            padding: 0 10px;
+            #mapInfowindow {
+                > div {
+                    > p {
                         line-height: 10px;
                     }
                 }
-                .striping{
+                .striping {
                     display: block;
                     opacity: 0.8;
                     width: 100%;
                     height: 1px;
                     background: white;
                 }
-                .infowindowload{
+                .infowindowload {
                     display: inline-block;
                 }
-                .infowindowfour>div{
+                .infowindowfour > div {
                     width: 50%;
                     float: left;
                     text-align: center;
                 }
             }
         }
-        .amap-info-content:hover{
+        .amap-info-content:hover {
             box-shadow: none;
             cursor: pointer;
         }
-        .amap-info-close{
+        .amap-info-close {
             top: 12px;
         }
     }
 </style>
-<style rel="stylesheet/scss" lang="scss"  scoped>
+<style rel="stylesheet/scss" lang="scss" scoped>
     @import "../../styles/monitoring.scss";
-    html{
+    html {
         font-size: 100px;
     }
     @font-face {
@@ -471,9 +414,9 @@
         font-weight: normal;
         font-style: normal;
     }
-    .total_box_number{
+    .total_box_number {
         font-family: 'NeuesBauenDemo';
-        font-size:0.48rem;
+        font-size: 0.48rem;
     }
 </style>
 
