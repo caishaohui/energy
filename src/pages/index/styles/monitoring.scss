@@ -1,3 +1,4 @@
+
 li,
 ul {
     list-style: none;
@@ -120,7 +121,12 @@ html {}
                 }
             }
         }
+
+        //地图客户窗口样式
     }
+
+    //右侧侧边栏title样式
+
     //任务——警告
     .box_taskError {
         width: 20%;
@@ -129,6 +135,7 @@ html {}
         float: right;
         //任务动态样式
         .box_task {
+            //height: 50%;
             padding: 0 20px;
             background: #FAFAFA;
             &_title {
@@ -156,32 +163,62 @@ html {}
                     -webkit-transform: translateY(50%);
                 }
             }
-        }
-        .box_task_content {
-            li {
-                border-bottom: 1px solid #E8E8E8;
-                margin-bottom: 10px;
-                >img {
+            &_content {
+                li {
+                    border-bottom: 1px solid #E8E8E8;
+                    margin-bottom: 10px;
+                    >img {
+                        float: left;
+                    }
+                }
+                &_site {
+                    padding: 10px 0px;
+                    display: inline-block;
                     float: left;
+                    margin-left: 10px;
+                    >div:nth-child(1) {
+                        padding: 0px;
+                        font-size: 18px;
+                        transform: translateY(-9px);
+                    }
+                }
+                &_achieve {
+                    display: inline-block;
+                    float: right;
                 }
             }
-            &_site {
-                padding: 10px 0px;
-                display: inline-block;
-                float: left;
-                margin-left: 10px;
-                >div:nth-child(1) {
-                    padding: 0px;
-                    font-size: 18px;
-                    transform: translateY(-9px);
+        }
+        .box_error{
+            height: 100%;
+            padding: 0 20px;
+            background: #FAFAFA;
+            &_title{
+                box-sizing: border-box;
+                &_sign {
+                    width: 4px;
+                    height: 18px;
+                    display: inline-block;
+                    background: #3DB4E8;
+                    margin-right: 10px;
+                    transform: translateY(50%);
+                    -webkit-transform: translateY(50%);
+                    float: left;
+                    margin-top: 8px;
                 }
-            }
-            &_achieve {
-                display: inline-block;
-                float: right;
+                p {
+                    display: inline-block;
+                    font-size: 16px;
+                    font-weight: bold;
+                }
+                img {
+                    float: right;
+                    transform: translateY(50%);
+                    -webkit-transform: translateY(50%);
+                }
             }
         }
     }
+
 }
 
 //.customer{

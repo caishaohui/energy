@@ -1,5 +1,5 @@
 <template>
-    <div id="task_module">
+    <div id="task_module" style="height: 50%">
         <div class="box_task">
             <div class="box_task_title">
                 <span class="box_task_title_sign"></span>

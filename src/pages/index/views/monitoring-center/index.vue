@@ -225,7 +225,7 @@
                         "<div><div>更多闲情</div></div>" +
                         "</div>" +
                         "</div>",
-                        offset: new AMap.Pixel(16, -45)
+                        offset: new AMap.Pixel(-20, -30)
                     });
                     AMap.event.addListener(marker, 'click', function () {
                         infoWindow.open(map, marker.getPosition());
@@ -305,7 +305,7 @@
                     showIndoorMap: false //关闭室内地图
                 });
                 _this.mapSign = map;
-                var infoWindow = new AMap.InfoWindow({offset: new AMap.Pixel(0, -30)});
+                var infoWindow = new AMap.InfoWindow({offset: new AMap.Pixel(-20, -30)});
                 var markers = [];
                 for (var i = 0, marker; i < data.length; i++) {
                     marker = new AMap.Marker({
