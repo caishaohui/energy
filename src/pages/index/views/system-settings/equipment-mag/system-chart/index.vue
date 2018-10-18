@@ -1,6 +1,6 @@
 <template >
   <div style="padding:30px;">
-    第三方士大夫
+    系统接线图
 
   </div>
 </template>
