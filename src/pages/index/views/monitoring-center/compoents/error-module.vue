@@ -9,20 +9,33 @@
              </div>
              <div class="box_error_content">
                  <ul>
-                     <li></li>
+                     <li v-for="(itemNumber,index) in errorNumber" class="box_error_content_number">
+                         <div><span class="error_number">{{itemNumber.number}}</span><span>个</span></div>
+                         <div></div>
+                         <div><span>{{itemNumber.id}}</span></div>
+                     </li>
                  </ul>
 
                  <ul>
-                     <li v-for="(item ,index) in errorData">
-                       <div @click="errorBtn(item)">{{item.id}}</div>
+                     <li v-for="(item ,index) in errorData" class="box_error_content_list">
+                       <div @click="errorBtn(item)">
+                           <div>{{item.id}}</div>
+                           <div>严重</div>
+                           <div class="clear"></div>
+                       </div>
                      </li>
                  </ul>
              </div>
          </div>
 
         <!--处理弹窗-->
-        <el-dialog title="收货地址" :visible.sync="disposeVisible" width="300px">
-            <span>需要注意的是内容是默认不居中的</span>
+        <el-dialog title="处理" :visible.sync="disposeVisible" width="400px">
+            <el-form ref="form"  label-width="80px" size="mini" class="alarmEvents">
+                <el-form-item label="状态 :">
+                    <!--<el-select  placeholder="所有">-->
+                        <!--<el-option :value=""/></el-select>-->
+                </el-form-item>
+            </el-form>
             <span slot="footer" class="dialog-footer">
     <el-button @click="disposeVisible = false">取 消</el-button>
     <el-button type="primary" @click="disposeVisible = false">确 定</el-button>
@@ -43,36 +56,45 @@
         data(){
             return{
                 markerError:'',
+                errorNumber : [{         //告警事件层级
+                    id: '特别严重',
+                    number:'0'
+                },{         //告警事件列表数据
+                    id: '严重',
+                    number:'1'
+                },{         //告警事件列表数据
+                    id: '较重',
+                    number:'2'
+                },{         //告警事件列表数据
+                    id: '一般',
+                    number:'3'
+                }],
+
                 errorData : [{         //告警事件列表数据
-                    id: '配电房门禁异常',
+                    id: '2AN21-4#变压器进线开关•总功率因素低，当前值：0.86，小于下限值：0.9\n' +
+                    '南山•深大附中高中部',
                     position: [114.039864, 22.551399],
                     desc: '0',
                     company: '深鹏达电网科技有限公司',
                     person: '蔡少辉',
                     phone: '12345678912',
                 }, {
-                    id: '总功率因素低',
+                    id: '2AN21-4#变压器进线开关•总功率因素低，当前值：0.86，小于下限值：0.9\n' +
+                    '南山•深大附中高中部',
                     position: [114.039498, 22.552612],
                     company: '深鹏达电网科技有限公司',
                     phone: '13556885862',
                     desc: '1',
                     person: '黄东文',
                 }, {
-                    id: '配电房门禁异常',
+                    id: '2AN21-4#变压器进线开关•总功率因素低，当前值：0.86，小于下限值：0.9\n' +
+                    '南山•深大附中高中部',
                     position: [114.237209, 22.722198],
                     company: '深鹏达电网科技有限公司',
                     phone: '13556885862',
                     desc: '1',
                     person: '黄东文',
-                },
-                    {
-                        id: '配电房门禁异常(龙岗中心城)',
-                        position: [114.237209,22.722198],
-                        company: 'XXX公司',
-                        phone: '13556885862',
-                        desc: '1',
-                        person: '黄东文',
-                    }],
+                }],
                 disposeVisible:false,
                 alarmEvents: false,  //告警列表弹窗
                 rightArrowsIcon,  //
@@ -202,5 +224,14 @@
     html{
         font-size: 100px;
     }
-
+    @font-face {
+        font-family: 'NeuesBauenDemo';
+        src: url('../../../../../assets/font/DS-DIGIB.TTF');
+        font-weight: normal;
+        font-style: normal;
+    }
+    .error_number {
+        font-family: 'NeuesBauenDemo';
+        font-size: 30px;
+    }
 </style>

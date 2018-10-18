@@ -173,7 +173,19 @@
                             person: '康赞',
                         }
                     ];
+                }else if(data.label == '龙岗区'){
+                    var key = 'children';
+                    data[key] = [
+                        {
+                            id: '龙岗中心城',
+                            position: [114.215494,22.696304],
+                            label: '龙岗中心城',
+                            desc: 'tb1',
+                            person: '康赞',
+                        }
+                    ];
                 }
+
                 // 点击客户信息显示地图窗口
                 if (data.position) {
                     var map = this.mapSign;
@@ -183,7 +195,6 @@
                     map.remove(markers);             //清除其他地图标记
                     var marker;
                     console.log(marker);
-
                     function addMarker() {
                         marker = new AMap.Marker({
                             position: data.position,
@@ -191,7 +202,6 @@
                         });
                         marker.setMap(map);
                     }
-
                     addMarker();
                     this.markerSite = marker;
                     AMap.event.addListener(marker, 'click', function () {
@@ -218,7 +228,6 @@
                     AMap.event.addListener(marker, 'click', function () {
                         infoWindow.open(map, marker.getPosition());
                     });
-
                     infoWindow.open(map, marker.getPosition());
                     map.setFitView();
                     // console.log(zoom);
