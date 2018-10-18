@@ -1,10 +1,11 @@
 <template>
     <div class="error-module" id="error_module" style="height: 50%">
+
          <div class="box_error">
              <div  class="box_error_title">
                  <span class="box_error_title_sign"></span>
                  <p>告警事件</p>
-                 <img :src="rightArrowsIcon" alt="">
+                 <img :src="rightArrowsIcon" alt="" @click="openAlarmEventsPop" style="cursor: pointer">
              </div>
              <div class="box_error_content">
                  <ul>
@@ -19,27 +20,7 @@
              </div>
          </div>
 
-        <!--警告地图窗口-->
-        <!--<div id="errorMapInfoWindow" >-->
-            <!--<div>警告窗口</div>-->
-            <!--<div>-->
-                <!--<span>客户名称</span>-->
-                <!--<span>故障设备</span>-->
-                <!--<span>故障说明</span>-->
-                <!--<span>客户联系人</span>-->
-                <!--<span>中心负责人</span>-->
-            <!--</div>-->
-            <!--<div>-->
-                <!--<button>发布任务</button>-->
-                <!--&lt;!&ndash;<el-button type="text" @click="disposeVisiblebtn" ref="disposeVisiblebtn">点击打开 Dialog</el-button>&ndash;&gt;-->
-            <!--</div>-->
-        <!--</div>-->
-
-        <!-- Form -->
-
-        <!--<div type="text" @click="disposeVisibleBtn">打开嵌套表单的 Dialog</div>-->
-        <!--处理弹窗组件-->
-        <!--<disposePop :disposeVisible.sync="disposeVisible"></disposePop>-->
+        <!--处理弹窗-->
         <el-dialog title="收货地址" :visible.sync="disposeVisible" width="300px">
             <span>需要注意的是内容是默认不居中的</span>
             <span slot="footer" class="dialog-footer">
@@ -47,20 +28,22 @@
     <el-button type="primary" @click="disposeVisible = false">确 定</el-button>
   </span>
         </el-dialog>
+
+           <!--告警列表弹窗组件-->
+        <alarm-events-pop :alarmEvents.sync="alarmEvents" class="common " ref='alarmeventspop'></alarm-events-pop>
     </div>
 </template>
 <script>
     import rightArrowsIcon from  '@/assets/icon/rightArrows.png'
+    import AlarmEventsPop from '@/pages/index/views/monitoring-center/compoents/alarm-events-pop'
     // import disposePop from '@/pages/index/views/monitoring-center/compoents/dispose-pop'
     export default {
-
         props:['mapSign','markerSign','markerSite','tests'],
         name: "error-modele",
         data(){
             return{
                 markerError:'',
-                errorContent:'',
-                errorData : [{
+                errorData : [{         //告警事件列表数据
                     id: '配电房门禁异常',
                     position: [114.039864, 22.551399],
                     desc: '0',
@@ -91,10 +74,15 @@
                         person: '黄东文',
                     }],
                 disposeVisible:false,
+                alarmEvents: false,  //告警列表弹窗
                 rightArrowsIcon,  //
             }
         },
         methods:{
+            openAlarmEventsPop() {   //告警列表弹窗
+                this.alarmEvents = true;
+                this.$refs.alarmeventspop.getHotMovieList()
+            },
             disposeVisiblebtn(){
                 // this.disposeVisible = true
             },
@@ -165,7 +153,7 @@
         mounted(){
         },
         components: {
-           // disposePop
+            AlarmEventsPop,
         }
     }
 </script>

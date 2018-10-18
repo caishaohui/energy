@@ -96,13 +96,6 @@
             </ul>
             <!--<p @click="testMap">点击移动地图香景</p>-->
             <!--告警事件-->
-            <i class="el-icon-arrow-right" @click="openAlarmEventsPop"></i>
-            <alarm-events-pop :alarmEvents.sync="alarmEvents" class="common " ref='alarmeventspop'></alarm-events-pop>
-        </div>
-
-        <div id="cj">
-            <span @click="aap">窗口</span>
-            <div>qqq</div>
         </div>
     </div>
 </template>
@@ -117,7 +110,6 @@
     import mapElectricianIcon from '@/assets/icon/mapElectricianIcon.png'
     import mapCustomerIcon from '@/assets/icon/mapCustomerIcon.png'
     import CustomerPop from './compoents/customer-pop.vue'
-    import AlarmEventsPop from '@/pages/index/views/monitoring-center/compoents/alarm-events-pop'
     import taskModule from '@/pages/index/views/monitoring-center/compoents/task-module'
     import errorModule from '@/pages/index/views/monitoring-center/compoents/error-module'
     export default {
@@ -144,7 +136,6 @@
                 mapElectricianIcon,
                 mapCustomerIcon,
                 dialogTableVisible: false,
-                alarmEvents: false,
 
                 markerSign: '',   //初始化标记
                 mapSign: '',      //初始化地图
@@ -153,9 +144,6 @@
             }
         },
         methods: {
-            aap(){
-                alert("123")
-            },
             // jump(){
             //   location.assign('./customer.html');
             // }
@@ -233,7 +221,6 @@
 
                     infoWindow.open(map, marker.getPosition());
                     map.setFitView();
-                    // var zoom = Math.floor(Math.random() * 7) + 11; //zoom范围[11,18]
                     // console.log(zoom);
                     map.setZoom(15); //设置地图层级
                     console.log(marker)
@@ -349,14 +336,12 @@
             },
         },
         created() {
-
         },
         mounted() {
             this.getCustomerData();
         },
         components: {
             CustomerPop,
-            AlarmEventsPop,
             taskModule,
             errorModule
         }
