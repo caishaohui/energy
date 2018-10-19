@@ -1,6 +1,5 @@
 <template>
-    <div class="error-module" id="error_module" style="height: 50%">
-
+    <div class="error-module" id="error_module">
          <div class="box_error">
              <div  class="box_error_title">
                  <span class="box_error_title_sign"></span>
@@ -14,34 +13,44 @@
                          <div></div>
                          <div><span>{{itemNumber.id}}</span></div>
                      </li>
+                     <div class="clear"></div>
                  </ul>
-
-                 <ul>
-                     <li v-for="(item ,index) in errorData" class="box_error_content_list">
-                       <div @click="errorBtn(item)">
-                           <div>{{item.id}}</div>
-                           <div>严重</div>
-                           <div class="clear"></div>
-                       </div>
-                     </li>
-                 </ul>
+                <div>
+                    <div>
+                        <ul>
+                            <li v-for="(item ,index) in errorData" class="box_error_content_list">
+                                <div @click="errorBtn(item)">
+                                    <div>{{item.id}}</div>
+                                    <div :class="item.number==0?'errorOne':item.number==1?'errorTwo':item.number==2? 'errorThree':item.number==4?'errorFour':''">{{item.number==0?'特别严重':item.number==1?'严重':item.number==2? '较重':item.number==4?'一般':''}}</div>
+                                    <div class="clear"></div>
+                                </div>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
              </div>
          </div>
-
         <!--处理弹窗-->
-        <el-dialog title="处理" :visible.sync="disposeVisible" width="400px">
-            <el-form ref="form"  label-width="80px" size="mini" class="alarmEvents">
-                <el-form-item label="状态 :">
-                    <!--<el-select  placeholder="所有">-->
-                        <!--<el-option :value=""/></el-select>-->
-                </el-form-item>
+        <el-dialog title="处理" :visible.sync="disposeVisible" width="400px" style="border-radius: 5px">
+            <el-form ref="form"  label-width="80px">
+                <!--<el-form :model="form">-->
+                    <el-form-item label="处理类型:" >
+                        <el-select v-model="form.region" placeholder="请选择">
+                            <el-option label="未处理" value="shanghai" style="padding-left: 10px" ></el-option>
+                            <el-option label="已处理" value="beijing" style="padding-left: 10px"></el-option>
+                            <el-option label="已忽略" value="beijing" style="padding-left: 10px"></el-option>
+                        </el-select>
+                    </el-form-item>
+                    <el-form-item label="处理说明:" >
+                    <el-input type="textarea" :rows="5" placeholder="请输入内容"  v-model="textarea" width="200px"></el-input>
+                    </el-form-item>
+                <!--</el-form>-->
             </el-form>
             <span slot="footer" class="dialog-footer">
     <el-button @click="disposeVisible = false">取 消</el-button>
     <el-button type="primary" @click="disposeVisible = false">确 定</el-button>
   </span>
         </el-dialog>
-
            <!--告警列表弹窗组件-->
         <alarm-events-pop :alarmEvents.sync="alarmEvents" class="common " ref='alarmeventspop'></alarm-events-pop>
     </div>
@@ -55,6 +64,18 @@
         name: "error-modele",
         data(){
             return{
+                textarea:'',
+                form: {
+                    name: '',
+                    region: '',
+                    date1: '',
+                    date2: '',
+                    delivery: false,
+                    type: [],
+                    resource: '',
+                    desc: ''
+                },
+                // formLabelWidth: '20px',
                 markerError:'',
                 errorNumber : [{         //告警事件层级
                     id: '特别严重',
@@ -69,39 +90,68 @@
                     id: '一般',
                     number:'3'
                 }],
-
                 errorData : [{         //告警事件列表数据
-                    id: '2AN21-4#变压器进线开关•总功率因素低，当前值：0.86，小于下限值：0.9\n' +
+                    id: '深鹏达电网科技有限公司•香丽大厦·总功率因素低，当前值：0.86，小于下限值：0.9\n' +
                     '南山•深大附中高中部',
                     position: [114.039864, 22.551399],
                     desc: '0',
                     company: '深鹏达电网科技有限公司',
                     person: '蔡少辉',
                     phone: '12345678912',
+                    number:'0'
+                },{
+                    id: '南山欢乐谷•总功率因素低，当前值：0.86，小于下限值：0.9\n' +
+                    '南山•深大附中高中部',
+                    position: [113.980375,22.542039],
+                    company: '南山欢乐谷',
+                    phone: '13556885862',
+                    desc: '1',
+                    person: '黄东文',
+                    number:'1'
+                },{
+                    id: '龙岗中心城•总功率因素低，当前值：0.86，小于下限值：0.9\n' +
+                    '南山•深大附中高中部',
+                    position: [114.237209,22.722198],
+                    company: '龙岗中心城',
+                    phone: '13556885862',
+                    desc: '1',
+                    person: '黄东文',
+                    number:'2'
                 }, {
-                    id: '2AN21-4#变压器进线开关•总功率因素低，当前值：0.86，小于下限值：0.9\n' +
+                    id: '深圳东站•总功率因素低，当前值：0.86，小于下限值：0.9\n' +
+                    '南山•深大附中高中部',
+                    position: [114.118333,22.603072],
+                    company: '深鹏达电网科技有限公司',
+                    phone: '13556885862',
+                    desc: '1',
+                    person: '黄东文',
+                    number:'2'
+                }, {
+                    id: '东部华侨城•总功率因素低，当前值：0.86，小于下限值：0.9\n' +
                     '南山•深大附中高中部',
                     position: [114.237209, 22.722198],
                     company: '深鹏达电网科技有限公司',
                     phone: '13556885862',
                     desc: '1',
                     person: '黄东文',
+                    number:'2'
                 }, {
-                    id: '2AN21-4#变压器进线开关•总功率因素低，当前值：0.86，小于下限值：0.9\n' +
+                    id: '深圳大运中心体育馆•总功率因素低，当前值：0.86，小于下限值：0.9\n' +
                     '南山•深大附中高中部',
-                    position: [114.237209, 22.722198],
-                    company: '深鹏达电网科技有限公司',
+                    position: [114.214464,22.695591],
+                    company: '深圳大运中心体育馆',
                     phone: '13556885862',
                     desc: '1',
                     person: '黄东文',
+                    number:'2'
                 }],
                 disposeVisible:false,
                 alarmEvents: false,  //告警列表弹窗
-                rightArrowsIcon,  //
+                rightArrowsIcon,
             }
         },
         methods:{
-            openAlarmEventsPop() {   //告警列表弹窗
+            openAlarmEventsPop(){   //告警列表弹窗
                 this.alarmEvents = true;
                 this.$refs.alarmeventspop.getHotMovieList()
             },
@@ -123,10 +173,8 @@
                         });
                         marker.setMap(map);
                     this.markerError = marker;
-
                     AMap.event.addListener(marker, 'click', function () {
                         infoWindow.open(map, marker.getPosition());
-
                     });
                     // var errorMapInfoWindow = document.getElementById("errorMapInfoWindow");
                 var errorContent = "<div class='errorInfowindow'>" +
@@ -147,34 +195,27 @@
                         content: errorContent,
                         offset: new AMap.Pixel(-20, -30)
                     });
-                    AMap.event.addListener(marker, 'click', function () {
-
-                        infoWindow.open(map, marker.getPosition());
-                    });
                     infoWindow.open(map, marker.getPosition());
-                    // map.panTo(data.position);
-
-// 简写 var position = [116, 39];
-
-// 获取地图中心点
-//                 var currentCenter = map.getCenter();
-
                     map.setFitView();
                     map.setZoom(13); //设置地图层级
-                    // map.panBy(0, 150);
-                    console.log(infoWindow);
+                    map.panBy(0, 150);
                     // 向父组件传值--点击的marker
                     this.$emit('markerErrorValue',this.markerError);
-
+                setTimeout(function (){
+                    console.log("123111");
+                    map.setFitView();
+                    map.setZoom(13); //设置地图层级
+                    map.panBy(0, 150);
+                },1);
                     setTimeout(function (){
-
+                        map.setFitView();
+                        map.setZoom(13); //设置地图层级
+                        map.panBy(0, 150);
                         var chuli = document.getElementById("disposeBtn");
                         chuli.onclick = function () {
                           _this.disposeVisible = true
-
                         }
                     },1000)
-
             }
         },
         created(){
@@ -193,7 +234,6 @@
             height: 300px;
             .errorTitle{
                 font-size: 18px;
-                /*border-bottom: 1px solid white;*/
                 padding-bottom: 10px;
             }
             .errorState{

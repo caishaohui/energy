@@ -50,7 +50,6 @@
                             <span>客户总计</span>
                             <span class="total_box_number">107</span>
                         </div>
-
                         <img :src="mapCustomerIcon" alt="">
 
                     </div>
@@ -85,8 +84,6 @@
                     :tests = "tests"
                     @markerErrorValue="markerErrorValue"
             ></errorModule>
-
-
             <ul>
                 <li style="cursor: pointer;" v-for="(item,index) in errorData">{{item.id}}</li>
             </ul>
@@ -181,7 +178,6 @@
                         }
                     ];
                 }
-
                 // 点击客户信息显示地图窗口
                 if (data.position) {
                     var map = this.mapSign;
@@ -226,9 +222,14 @@
                     });
                     infoWindow.open(map, marker.getPosition());
                     map.setFitView();
-                    // console.log(zoom);
                     map.setZoom(13); //设置地图层级
-                    // map.panBy(0, 150);
+                    map.panBy(0, 150);
+                    setTimeout(function (){
+                        console.log("123111");
+                        map.setFitView();
+                        map.setZoom(13); //设置地图层级
+                        map.panBy(0, 150);
+                    },1);
                 }
             },
             getCustomerData() {
@@ -258,6 +259,15 @@
                     phone: '13556885862',
                     desc: '1',
                     person: '黄东文',
+                },{
+                    id: '南山欢乐谷•总功率因素低，当前值：0.86，小于下限值：0.9\n' +
+                    '南山•深大附中高中部',
+                    position: [113.980375,22.542039],
+                    company: '南山欢乐谷',
+                    phone: '13556885862',
+                    desc: '1',
+                    person: '黄东文',
+                    number:'1'
                 }];
                 //侧边栏控件数据（位置信息）
                 var CustomerData = [{
@@ -266,27 +276,26 @@
                     person: '深圳',
                     children: [{
                         label: '宝安区',
-                    }, {
+                    },{
                         label: '罗湖区',
-                    }, {
+                    },{
                         label: '福田区',
                         children: [{
                             label: 'test'
                         }]
-                    }, {
+                    },{
                         label: '龙岗区',
                         children: [{
                             label: 'test'
                         }]
-                    }, {
+                    },{
                         label: '南山区'
-                    }, {
+                    },{
                         label: '盐田区'
-                    }, {
+                    },{
                         label: '坪山区'
                     },{
                         label: '龙华区',
-                  
                     }
                     ]
                 }];
