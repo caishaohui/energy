@@ -81,7 +81,7 @@
                 }, {
                     id: '2AN21-4#变压器进线开关•总功率因素低，当前值：0.86，小于下限值：0.9\n' +
                     '南山•深大附中高中部',
-                    position: [114.039498, 22.552612],
+                    position: [114.237209, 22.722198],
                     company: '深鹏达电网科技有限公司',
                     phone: '13556885862',
                     desc: '1',
@@ -111,26 +111,22 @@
             errorBtn(data){
                     var _this = this;
                     var map = this.mapSign;
-                    map.setCenter([114.039864, 22.551399]);
                     var markers = this.markerSign;
                     var markerSite = this.markerSite;
                     markers.push(markerSite);
                     markers.push(this.markerError);
                     map.remove(markers);
-                    // map.remove(markerSite);
-                    // console.log(map,'af');
                     var marker = '';
-                    function addMarker() {
                         marker = new AMap.Marker({
-                            position: data.position,
+                            position: [data.position[0],data.position[1]],
                             offset: new AMap.Pixel(-13, -30),
                         });
                         marker.setMap(map);
-                    }
-                    addMarker();
                     this.markerError = marker;
+
                     AMap.event.addListener(marker, 'click', function () {
                         infoWindow.open(map, marker.getPosition());
+
                     });
                     // var errorMapInfoWindow = document.getElementById("errorMapInfoWindow");
                 var errorContent = "<div class='errorInfowindow'>" +
@@ -152,19 +148,30 @@
                         offset: new AMap.Pixel(-20, -30)
                     });
                     AMap.event.addListener(marker, 'click', function () {
+
                         infoWindow.open(map, marker.getPosition());
                     });
-                // AMap.setPointToCenter(400,400)
                     infoWindow.open(map, marker.getPosition());
+                    // map.panTo(data.position);
+
+// 简写 var position = [116, 39];
+
+// 获取地图中心点
+//                 var currentCenter = map.getCenter();
+
                     map.setFitView();
-                    map.setZoom(15); //设置地图层级
+                    map.setZoom(13); //设置地图层级
+                    map.panBy(0, 150);
                     console.log(infoWindow);
                     // 向父组件传值--点击的marker
                     this.$emit('markerErrorValue',this.markerError);
+
                     setTimeout(function (){
+
                         var chuli = document.getElementById("disposeBtn");
                         chuli.onclick = function () {
                           _this.disposeVisible = true
+
                         }
                     },1000)
 

@@ -1,6 +1,5 @@
 <template>
     <div class="app-container">
-
         <!--客户列表侧边栏-->
         <div class="customer-box">
             <el-tabs v-model="activeName" @tab-click="handleClick">
@@ -58,11 +57,9 @@
                     <div class="total_box_center">
                         <div>
                             <span>中心总计</span>
-                            <span class="total_box_number">154</span>
+                            <span class="total_box_number">1</span>
                         </div>
-
                         <img :src="mapCenterIcon" alt="">
-
                     </div>
                     <div class="total_box_electric">
                         <div>
@@ -78,7 +75,6 @@
                 </div>
             </div>
         </div>
-
         <!--右侧侧边告警-->
         <div class="box_taskError">
             <taskModule></taskModule>
@@ -184,6 +180,18 @@
                             person: '康赞',
                         }
                     ];
+                }else if (data.label == '龙华区') {
+                    var key = 'children';
+                    data[key] = [
+                        {
+                            id: '龙华',
+                            position: [  114.028277,22.610913],
+                            label: '龙华',
+                            desc: 'tb1',
+                            person: '康赞',
+                        }
+                    ];
+
                 }
 
                 // 点击客户信息显示地图窗口
@@ -231,8 +239,8 @@
                     infoWindow.open(map, marker.getPosition());
                     map.setFitView();
                     // console.log(zoom);
-                    map.setZoom(15); //设置地图层级
-                    console.log(marker)
+                    map.setZoom(13); //设置地图层级
+                    map.panBy(0, 150);
                 }
             },
             getCustomerData() {
@@ -262,6 +270,15 @@
                     phone: '13556885862',
                     desc: '1',
                     person: '黄东文',
+                },   {
+                    id: '龙华',
+                    position: [114.028277,22.610913],
+                    label: '龙华',
+                    company: '龙华',
+                    phone: '13556885862',
+                    desc: '1',
+                    person: '黄东文',
+
                 }];
                 //侧边栏控件数据（位置信息）
                 var CustomerData = [{
@@ -288,6 +305,11 @@
                         label: '盐田区'
                     }, {
                         label: '坪山区'
+                    },{
+                        label: '龙华区',
+                        children: [{
+                            label: 'test'
+                        }]
                     }
                     ]
                 }];
@@ -297,7 +319,7 @@
                 var map = new AMap.Map("container", {
                     resizeEnable: true, //是否监控地图容器尺寸变化
                     zoom: 12, //初始地图级别
-                    center: [121.498586, 31.239637], //初始地图中心点
+                    // center: [114.237209, 22.722198], //初始地图中心点
                     showIndoorMap: false //关闭室内地图
                 });
                 _this.mapSign = map;
