@@ -180,18 +180,6 @@
                             person: '康赞',
                         }
                     ];
-                }else if (data.label == '龙华区') {
-                    var key = 'children';
-                    data[key] = [
-                        {
-                            id: '龙华',
-                            position: [  114.028277,22.610913],
-                            label: '龙华',
-                            desc: 'tb1',
-                            person: '康赞',
-                        }
-                    ];
-
                 }
 
                 // 点击客户信息显示地图窗口
@@ -240,7 +228,7 @@
                     map.setFitView();
                     // console.log(zoom);
                     map.setZoom(13); //设置地图层级
-                    map.panBy(0, 150);
+                    // map.panBy(0, 150);
                 }
             },
             getCustomerData() {
@@ -270,15 +258,6 @@
                     phone: '13556885862',
                     desc: '1',
                     person: '黄东文',
-                },   {
-                    id: '龙华',
-                    position: [114.028277,22.610913],
-                    label: '龙华',
-                    company: '龙华',
-                    phone: '13556885862',
-                    desc: '1',
-                    person: '黄东文',
-
                 }];
                 //侧边栏控件数据（位置信息）
                 var CustomerData = [{
@@ -307,9 +286,7 @@
                         label: '坪山区'
                     },{
                         label: '龙华区',
-                        children: [{
-                            label: 'test'
-                        }]
+                  
                     }
                     ]
                 }];

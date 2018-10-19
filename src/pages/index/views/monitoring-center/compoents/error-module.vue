@@ -161,7 +161,7 @@
 
                     map.setFitView();
                     map.setZoom(13); //设置地图层级
-                    map.panBy(0, 150);
+                    // map.panBy(0, 150);
                     console.log(infoWindow);
                     // 向父组件传值--点击的marker
                     this.$emit('markerErrorValue',this.markerError);
