@@ -43,25 +43,31 @@ html {}
             cursor: pointer;
         }
         &_load_electric {
+            padding: 0 10px;
             top: 15px;
             z-index: 99;
             border-radius: 4px;
             position: absolute;
             right: 20px;
             background: rgba(0, 0, 0, 0.7);
-            padding: 8px 15px;
+            height: 32px;
+            line-height: 32px;
             ;
             >div {
                 display: inline-block;
                 position: relative;
-                margin-left: 10px;
+
                 >img {
                     float: left;
+                    margin-top: 6px;
                 }
                 >span {
                     color: white;
                     margin-left: 5px;
                 }
+            }
+            >div:nth-child(2){
+                margin-left: 10px;
             }
         }
         #container {
@@ -70,13 +76,10 @@ html {}
             position: relative;
             .total_box {
                 width: 100%;
-                //z-index: 99999;
-                //position: absolute;
                 bottom: 0px;
                 >div {
                     position: absolute;
                     border-radius: 4px;
-                    //float: left;
                     width: 3.2rem;
                     height: 1.2rem;
                     z-index: 999;
@@ -156,6 +159,7 @@ html {}
                     display: inline-block;
                     font-size: 16px;
                     font-weight: bold;
+                    margin-top: 18px
                 }
                 img {
                     float: right;
@@ -235,6 +239,7 @@ html {}
                     display: inline-block;
                     font-size: 16px;
                     font-weight: bold;
+                    margin-top: 18px
                 }
                 img {
                     float: right;

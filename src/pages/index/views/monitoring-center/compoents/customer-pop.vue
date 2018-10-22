@@ -5,7 +5,7 @@
         <el-select v-model="listQuery.type" placeholder="全部">
           <el-option v-for="item in typeOptions" :key="item.id" :label="item.label" :value="item.id" />
         </el-select>
-      </el-form-item> 
+      </el-form-item>
       <el-form-item label="所属中心 :">
         <el-select v-model="listQuery.center" placeholder="所有">
           <el-option v-for="item in centerOptions" :key="item.id" :label="item.label" :value="item.id" />
@@ -17,7 +17,7 @@
       </el-form-item>
     </el-form>
     <div class="container-body">
-      <el-table :data="tableInfoList" v-loading='loading'  element-loading-text="加载中">
+      <el-table :data="tableInfoList" v-loading='loading'  element-loading-text="加载中" type=index>
         <el-table-column property="number" label="编号" align="center" width="80"></el-table-column>
         <el-table-column property="CTname" label="客户名称" align="center" width="220"></el-table-column>
         <el-table-column property="CTtype" label="客户类型" align="center" ></el-table-column>
@@ -26,15 +26,15 @@
         <el-table-column property="CTpeople" label="联系人" align="center"></el-table-column>
         <el-table-column label="操作" align="center">
           <template slot-scope="scope">
-                                  <el-button type="text" size="small">地图</el-button>
-                                  <el-button type="text" size="small">更多</el-button>
+                                  <el-button type="text" size="small" @click="handleEdit(scope.$index, scope.row)" >地图</el-button>
+                                  <el-button type="text" size="small" >更多</el-button>
 </template>
       </el-table-column>
     </el-table>
        </div>
     <div class="block">
       <span class="demonstration">共{{total}}条数据</span>
-      <el-pagination  v-show="total>0"  background layout="prev, pager, next"  
+      <el-pagination  v-show="total>0"  background layout="prev, pager, next"
       @current-change="handleCurrentChange"
       :page-size="listQuery.limit"
       :current-page="listQuery.page"
@@ -44,9 +44,9 @@
 </template>
 
 <script>
+  import store from '@/pages/index/store/index.js'
   export default {
-    created() {},
-    props: ['dialogTableVisible'],
+    props: ['dialogTableVisible','mapSign','markerSign'],
     data() {
       return {
         //请求和查询参数分页
@@ -87,14 +87,18 @@
         total: null, //总数据
         tableInfoList: [],
         loading: true,
-        timeNum: '' //清除定时器
+        timeNum: '', //清除定时器
+
+
+        markerCustomer:'' //弹窗地图marker标记
       }
     },
     watch: {},
+    created() {},
     methods: {
       //关闭清除数据
       closeDialog(done) {
-        this.$emit('update:dialogTableVisible', false)
+        this.$emit('update:dialogTableVisible', false);
         this.total = 0;
         clearTimeout(this.timeNum)
       },
@@ -109,27 +113,31 @@
           CTcenter: '福田',
           CTaddress: '深圳市福田区莲花路2075号香丽大厦裙楼三楼',
           CTpeople: '黎明-17503091882',
+          position:[114.039864, 22.551399]
         }, {
-          number: '01',
+          number: '02',
           CTname: '深鹏达电网科技有限公司',
           CTtype: '普通会员',
           CTcenter: '福田',
           CTaddress: '深圳市福田区莲花路2075号香丽大厦裙楼三楼',
           CTpeople: '黎明-17503091882',
+            position: [114.039498, 22.552612],
         }, {
-          number: '01',
+          number: '03',
           CTname: '深鹏达电网科技有限公司',
           CTtype: '普通会员',
           CTcenter: '福田',
           CTaddress: '深圳市福田区莲花路2075号香丽大厦裙楼三楼',
           CTpeople: '黎明-17503091882',
+            position: [114.237209, 22.722198],
         }, {
-          number: '01',
+          number: '04',
           CTname: '深鹏达电网科技有限公司',
           CTtype: '普通会员',
           CTcenter: '福田',
           CTaddress: '深圳市福田区莲花路2075号香丽大厦裙楼三楼',
           CTpeople: '黎明-17503091882',
+            position: [113.980375,22.542039],
         }, ]
         this.total = 10
         this.timeNum = setTimeout(_ => {
@@ -145,6 +153,59 @@
         this.listQuery.page = 1
         this.getHotMovieList()
       },
+
+        handleEdit(index,row){
+            var _this = this;
+            var map = this.mapSign;
+            var markers = this.markerSign;
+            // markers.push(this.markerSite);
+            // markers.push(this.markerCustomer);
+            markers.push(store.state.customerMarker);
+            map.remove(markers);
+            var marker = '';
+            marker = new AMap.Marker({
+                position:row.position,
+                offset: new AMap.Pixel(-13, -30),
+            });
+            marker.setMap(map);
+            this.markerCustomer = marker;
+            AMap.event.addListener(marker, 'click', function () {
+                infoWindow.open(map, marker.getPosition());
+            });
+            var errorContent = "<div class='errorInfowindow'>" +
+                "<div class='errorTitle'>告警闲情:</div>" +
+                "<div class='errorState'>客户名称:</div>" +
+                "<div class='errorState'>告警等级:</div>" +
+                "<div class='errorState'>故障设备:</div>" +
+                "<div class='errorState'>故障说明:</div>" +
+                "<div class='errorState'>客户联系人:</div>" +
+                "<div class='errorState'>中心负责人:</div>" +
+                "<div class='publishBox'>" +
+                "<span class='publishBtn'>发布任务</span>"+
+                "<span id='disposeBtn' class='disposeBtn'>处理</span>"+
+                "</div>"+
+                "</div>";
+            var infoWindow = new AMap.InfoWindow({
+                // isCustom: true,  //使用自定义窗体
+                content: errorContent,
+                offset: new AMap.Pixel(-20, -30)
+            });
+            infoWindow.open(map, marker.getPosition());
+            map.setFitView();
+            map.setZoom(13); //设置地图层级
+            map.panBy(0, 150);
+            // 向父组件传值--点击的marker
+            // this.$emit('markerCustomerValue',this.markerCustomer);
+            //通过vuex，store 向同级组件传值：客户列表地图 marker
+            store.commit('setcustomerMarker',this.markerCustomer);
+            setTimeout(function (){
+                map.setFitView();
+                map.setZoom(13); //设置地图层级
+                map.panBy(0, 150);
+            },1);
+            this.$emit('update:dialogTableVisible', false);
+
+        }
     },
   }
 </script>

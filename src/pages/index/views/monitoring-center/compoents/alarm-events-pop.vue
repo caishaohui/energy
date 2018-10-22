@@ -1,5 +1,5 @@
 <template>
-
+<div>
     <el-dialog title="告警事件" :visible.sync="alarmEvents" :before-close='closeDialog'>
         <el-form ref="form" :model="listQuery" label-width="80px" size="mini" class="alarmEvents">
             <el-form-item label="等级 :">
@@ -26,34 +26,40 @@
             </el-form-item>
         </el-form>
         <div class="container-body">
-        <el-table id="rebateSetTable" :data="tableInfoList" ref="multipleTable"  element-loading-text="加载中" v-loading='loading' @selection-change="handleSelectionChange">
-            <el-table-column type="selection" width="35"></el-table-column>
-            <el-table-column property="number" label="编号" align="center" width="80"></el-table-column>
-            <el-table-column property="CTname" label="客户名称" align="center" width="200"></el-table-column>
-            <el-table-column property="grade" label="等级" align="center"></el-table-column>
-            <el-table-column property="describe" label="描述" align="center"></el-table-column>
-            <el-table-column property="occurrenceTime" label="发生时间" align="center"></el-table-column>
-            <el-table-column property="equipment" label="设备" align="center"></el-table-column>
-            <el-table-column property="state" label="状态" align="center"></el-table-column>
-            <el-table-column label="操作" align="center">
-                <template slot-scope="scope">
-                                                                        <el-button type="text" size="small">处理</el-button>
-</template>
-            </el-table-column>
-    </el-table>
-    </div>
-    <div class="block">
-      <span class="demonstration">共{{total}}条数据</span>
-      <el-pagination v-show="total>0"  background layout="prev, pager, next"   
-      @current-change="handleCurrentChange"
-      :page-size="listQuery.limit"
-      :current-page="listQuery.page"
-      :total="total"> </el-pagination>
-    </div>
-  </el-dialog>
+            <el-table id="rebateSetTable" :data="tableInfoList" ref="multipleTable"  element-loading-text="加载中" v-loading='loading' @selection-change="handleSelectionChange">
+                <el-table-column type="selection" width="35"></el-table-column>
+                <el-table-column property="number" label="编号" align="center" width="80"></el-table-column>
+                <el-table-column property="CTname" label="客户名称" align="center" width="200"></el-table-column>
+                <el-table-column property="grade" label="等级" align="center"></el-table-column>
+                <el-table-column property="describe" label="描述" align="center"></el-table-column>
+                <el-table-column property="occurrenceTime" label="发生时间" align="center"></el-table-column>
+                <el-table-column property="equipment" label="设备" align="center"></el-table-column>
+                <el-table-column property="state" label="状态" align="center"></el-table-column>
+                <el-table-column label="操作" align="center">
+                    <template slot-scope="scope">
+                        <el-button type="text" size="small" @click="getDisposePop">处理</el-button>
+                    </template>
+                </el-table-column>
+            </el-table>
+        </div>
+        <div class="block">
+            <span class="demonstration">共{{total}}条数据</span>
+            <el-pagination v-show="total>0"  background layout="prev, pager, next"
+                           @current-change="handleCurrentChange"
+                           :page-size="listQuery.limit"
+                           :current-page="listQuery.page"
+                           :total="total"> </el-pagination>
+        </div>
+    </el-dialog>
+
+    <!--处理弹窗-->
+    <disposePop :disposePopModule.sync="disposePopModule" ref='disposePop'></disposePop>
+</div>
+
 </template>
 
 <script>
+    import disposePop from '@/pages/index/views/monitoring-center/compoents/dispose-pop'
     export default {
         name: 'AlarmEvents',
         created() {},
@@ -78,6 +84,9 @@
                 multipleSelection: [], //表单全选
                 downloadLoading: false, //导出按钮loding
                 filename: '告警列表', //导出excel名
+
+
+                disposePopModule:false,
             }
         },
         watch: {},
@@ -190,7 +199,13 @@
                 this.listQuery.page = 1
                 this.getHotMovieList()
             },
+            getDisposePop(){
+                this.disposePopModule = true
+            },
         },
+        components: {
+            disposePop,
+        }
     }
 </script>
 

@@ -1,29 +1,62 @@
 <template>
-    <!--<el-dialog title="收货地址" :visible.sync="disposeVisible">-->
-        <!--<el-form :model="form">-->
-            <!--<el-form-item label="活动名称" :label-width="formLabelWidth">-->
-                <!--<el-input v-model="form.name" autocomplete="off"></el-input>-->
-            <!--</el-form-item>-->
-            <!--<el-form-item label="活动区域" :label-width="formLabelWidth">-->
-                <!--<el-select v-model="form.region" placeholder="请选择活动区域">-->
-                    <!--<el-option label="区域一" value="shanghai"></el-option>-->
-                    <!--<el-option label="区域二" value="beijing"></el-option>-->
-                <!--</el-select>-->
-            <!--</el-form-item>-->
-        <!--</el-form>-->
-        <!--<div slot="footer" class="dialog-footer">-->
-            <!--<el-button @click="disposeVisible = false">取 消</el-button>-->
-            <!--<el-button type="primary" @click="disposeVisible= false">确 定</el-button>-->
-        <!--</div>-->
-    <!--</el-dialog>-->
+<div>
+        <el-dialog
+                width="400px" style="border-radius: 5px"
+                title="处理"
+                :visible.sync="disposePopModule"
+                :before-close='closeDialog'
+                append-to-body>
+            <el-form ref="form" label-width="80px">
+                <!--<el-form :model="form">-->
+                <el-form-item label="处理类型:">
+                    <el-select v-model="form.region" placeholder="请选择">
+                        <el-option label="未处理" value="shanghai" style="padding-left: 10px"></el-option>
+                        <el-option label="已处理" value="beijing" style="padding-left: 10px"></el-option>
+                        <el-option label="已忽略" value="beijing" style="padding-left: 10px"></el-option>
+                    </el-select>
+                </el-form-item>
+                <el-form-item label="处理说明:">
+                    <el-input type="textarea" :rows="5" placeholder="请输入内容" v-model="textarea" width="200px"></el-input>
+                </el-form-item>
+                <!--</el-form>-->
+            </el-form>
+                   <span slot="footer" class="dialog-footer">
+    <el-button @click="closeDisposePop">取 消</el-button>
+    <el-button type="primary" @click="closeDisposePop">确 定</el-button>
+  </span>
+        </el-dialog>
+</div>
 </template>
 
 <script>
     export default {
-        props: ['disposeVisible'],
+        props: ['disposePopModule'],
         name: "dispose-pop",
         data(){
-            return{}
+            return{
+                textarea: '',
+                form: {
+                    name: '',
+                    region: '',
+                    date1: '',
+                    date2: '',
+                    delivery: false,
+                    type: [],
+                    resource: '',
+                    desc: ''
+                },
+            }
+        },
+        methods:{
+            //关闭清除数据
+            closeDialog(done) {
+                this.$emit('update:disposePopModule', false);
+                // this.total = null;
+                // clearTimeout(this.timeNum)
+            },
+            closeDisposePop(){
+                this.$emit('update:disposePopModule', false);
+            }
         }
     }
 </script>

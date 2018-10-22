@@ -30,8 +30,7 @@
             <div id="container">
                 <!--客户按钮-->
                 <div class="box_map_customer_list" @click="openCustomerPop">客户列表 > ></div>
-                <customer-pop :dialogTableVisible.sync="dialogTableVisible" class="common"
-                              ref='customerpop'></customer-pop>
+
                 <!--实时总负荷，实时总电量-->
                 <div class="box_map_load_electric">
                     <div class="box_map_load_electric_load">
@@ -56,7 +55,7 @@
                     <div class="total_box_center">
                         <div>
                             <span>中心总计</span>
-                            <span class="total_box_number">1</span>
+                            <span class="total_box_number">{{testNumber}}</span>
                         </div>
                         <img :src="mapCenterIcon" alt="">
                     </div>
@@ -74,15 +73,21 @@
                 </div>
             </div>
         </div>
-        <!--右侧侧边告警-->
+
+        <!--客户弹窗列表组件-->
+        <customer-pop :dialogTableVisible.sync="dialogTableVisible" class="common"
+                      ref='customerpop'
+                      :mapSign = "mapSign"
+                      :markerSign = "markerSign"
+        ></customer-pop>
+        <!--右侧边组件-->
         <div class="box_taskError">
+            <!--右侧任务动态组件-->
             <taskModule></taskModule>
+            <!--右侧警告组件-->
             <errorModule
                     :mapSign = "mapSign"
                     :markerSign = "markerSign"
-                    :markerSite = "markerSite"
-                    :tests = "tests"
-                    @markerErrorValue="markerErrorValue"
             ></errorModule>
             <ul>
                 <li style="cursor: pointer;" v-for="(item,index) in errorData">{{item.id}}</li>
@@ -105,10 +110,11 @@
     import CustomerPop from './compoents/customer-pop.vue'
     import taskModule from '@/pages/index/views/monitoring-center/compoents/task-module'
     import errorModule from '@/pages/index/views/monitoring-center/compoents/error-module'
+    import store from '@/pages/index/store/index.js'
     export default {
         data() {
             return {
-                tests:'213',
+                testNumber:'',
                 activeName: 'first',// 客户，电工分页
                 input23: '',//客户搜索
                 data: [],//客户，树形结构数据
@@ -133,7 +139,7 @@
                 markerSign: '',   //初始化标记
                 mapSign: '',      //初始化地图
                 markerSite: '',   // 点击地址位置查找到客户的标记
-                markerError: '',  // 点击警告的标记
+                // markerError: '',  // 点击警告的标记
             }
         },
         methods: {
@@ -141,10 +147,6 @@
             //   location.assign('./customer.html');
             // }
             handleClick(tab, event) {  //分页
-            },
-            markerErrorValue:function (data) {
-                // console.log(data)
-                this.markerError = data
             },
             handleNodeClick(data) {
                 var _this = this;
@@ -182,11 +184,12 @@
                 if (data.position) {
                     var map = this.mapSign;
                     var markers = this.markerSign;   // 获取默认地图标记marker
-                    markers.push(this.markerError);  // 添加其他地图标价marker例如警告，任务动态
-                    markers.push(this.markerSite);
+                    // markers.push(this.markerError);  // 添加其他地图标价marker例如警告，任务动态
+                    // markers.push(this.markerSite);   //清除本地图的marker
+                    // markers.push(this.markerCustomer);  //清除客户弹窗列表的marker
+                    markers.push(store.state.customerMarker); //清除客户列表地图marker
                     map.remove(markers);             //清除其他地图标记
                     var marker;
-                    console.log(marker);
                     function addMarker() {
                         marker = new AMap.Marker({
                             position: data.position,
@@ -224,12 +227,13 @@
                     map.setFitView();
                     map.setZoom(13); //设置地图层级
                     map.panBy(0, 150);
+                    // this.testNumber = store.state.testNumber;
+                    store.commit('setcustomerMarker', this.markerSite);
                     setTimeout(function (){
-                        console.log("123111");
                         map.setFitView();
                         map.setZoom(13); //设置地图层级
                         map.panBy(0, 150);
-                    },1);
+                    },100);
                 }
             },
             getCustomerData() {
@@ -355,6 +359,7 @@
         created() {
         },
         mounted() {
+            this.testNumber = store.state.testNumber;
             this.getCustomerData();
         },
         components: {
@@ -368,7 +373,8 @@
     .box_map {
         .amap-info-content {
             width: 400px;
-            background: rgba(12, 27, 53, 0.75);
+            background: #152F5C;
+            opacity: 0.9;
             box-shadow: none;
             border-radius: 4px;
             color: white;
