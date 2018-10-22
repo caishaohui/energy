@@ -29,7 +29,7 @@
                 </el-form-item>
             </el-form>
         </el-main>
-        <el-footer><span>    ©2018-201x 深圳市深鹏达电网科技有点公司 粤ICP备x x x x x x号-x</span> </el-footer>
+        <el-footer><span>    ©2018-201x 深圳市深鹏达电网科技有限公司 粤ICP备x x x x x x号-x</span> </el-footer>
     </el-container>
 </template>
 

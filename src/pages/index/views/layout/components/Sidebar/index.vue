@@ -37,6 +37,7 @@
       isCollapse() {
         //加了这个点击收缩有卡顿
         return !this.sidebar.opened
+
       }
     }
   }
