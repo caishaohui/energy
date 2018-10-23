@@ -37,7 +37,6 @@ export const constantRouterMap = [{
         component: Layout,
         children: [{
             path: 'monitoring',
-            name: 'monitoring',
             component: () =>
                 import ('@/pages/index/views/monitoring-center/index'),
             meta: { title: '监控中心', icon: 'iconfont icon-monitoringCenter' }
