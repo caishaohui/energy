@@ -18,12 +18,18 @@
                 </el-tab-pane>
                 <!--电工-->
                 <el-tab-pane label="电工" name="second">
-                    电工
+                    <div class="block">
+                        <span class="demonstration">默认 click 触发子菜单</span>
+                        <el-cascader
+                                :options="options"
+                                v-model="selectedOptions"
+                                @change="handleChange">
+                        </el-cascader>
+                    </div>
                 </el-tab-pane>
             </el-tabs>
         </div>
         <!--<el-button @click="jump">跳转到客户页面</el-button>-->
-
         <!--地图-->
         <div class="box_map">
             <div id="my-list" style="display: none"></div>
@@ -50,7 +56,6 @@
                             <span class="total_box_number">107</span>
                         </div>
                         <img :src="mapCustomerIcon" alt="">
-
                     </div>
                     <div class="total_box_center">
                         <div>
@@ -73,7 +78,6 @@
                 </div>
             </div>
         </div>
-
         <!--客户弹窗列表组件-->
         <customer-pop :dialogTableVisible.sync="dialogTableVisible" class="common"
                       ref='customerpop'
@@ -111,10 +115,11 @@
     import taskModule from '@/pages/index/views/monitoring-center/compoents/task-module'
     import errorModule from '@/pages/index/views/monitoring-center/compoents/error-module'
     import store from '@/pages/index/store/index.js'
+    import {tool} from '@/pages/index/common/common.js'
     export default {
         data() {
             return {
-                testNumber:'',
+                testNumber: '',
                 activeName: 'first',// 客户，电工分页
                 input23: '',//客户搜索
                 data: [],//客户，树形结构数据
@@ -140,12 +145,38 @@
                 mapSign: '',      //初始化地图
                 markerSite: '',   // 点击地址位置查找到客户的标记
                 // markerError: '',  // 点击警告的标记
+
+
+                options: [ {
+                    value: '广东省',
+                    label: '广东省',
+                    children: [{
+                        value: '深圳市',
+                        label: '深圳市',
+                        children: [{
+                            value: '福田区',
+                            label: '福田区'
+                        }]
+                    }]
+                }],
+                selectedOptions: [],
+                selectedOptions2: []
             }
         },
         methods: {
             // jump(){
             //   location.assign('./customer.html');
             // }
+            handleChange(value) {
+                console.log(value);
+                    this.$axios.get('https://restapi.amap.com/v3/geocode/geo?address=香丽大厦&city=深圳&key=eb2c8ef35d3cb0f99d01358fd72c10b1', {
+                    })
+                        .then(res => {
+                            console.log(res)
+                        })
+            },
+            // 搜索
+
             handleClick(tab, event) {  //分页
             },
             handleNodeClick(data) {
@@ -204,7 +235,7 @@
                     });
                     var infoWindow = new AMap.InfoWindow({
                         // isCustom: true,  //使用自定义窗体
-                        content: "<div id='mapInfowindow'>" +
+                        content:"<div id='mapInfowindow'>" +
                         "<div>" +
                         "<p>" + data.label + "</p>" +
                         "<p>联系人</p><p>联系电话</p></div>" +
@@ -355,12 +386,15 @@
                 this.alarmEvents = true;
                 this.$refs.alarmeventspop.getHotMovieList()
             },
+
+
         },
         created() {
         },
         mounted() {
             this.testNumber = store.state.testNumber;
             this.getCustomerData();
+
         },
         components: {
             CustomerPop,

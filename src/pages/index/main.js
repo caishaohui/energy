@@ -10,6 +10,8 @@ import "element-ui/lib/theme-chalk/index.css";
 import '@/pages/index/styles/index.scss' // global css
 import '@/assets/js/common.js'
 import '@/pages/index/permission' // permission control
+import axios from 'axios';
+Vue.prototype.$axios = axios;
 Vue.use(ElementUI);
 Vue.config.productionTip = false;
 import '@/assets/font/iconfont.css'

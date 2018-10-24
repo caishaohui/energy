@@ -33,7 +33,7 @@
                 </div>
             </div>
         </div>
-        
+
         <!--告警列表弹窗组件-->
         <alarm-events-pop :alarmEvents.sync="alarmEvents" class="common " ref='alarmeventspop'></alarm-events-pop>
 
@@ -194,14 +194,13 @@
                     map.setFitView();
                     map.setZoom(13); //设置地图层级
                     map.panBy(0, 150);
-                }, 100);
+                },100);
                 setTimeout(function () {
                     var chuli = document.getElementById("disposeBtn");
                     chuli.onclick = function () {
-
                         _this.disposePopModule = true;
                     }
-                }, 1000)
+                },1000)
             }
         },
         created() {

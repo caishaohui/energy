@@ -11,7 +11,7 @@
                 <el-form-item label="处理类型:">
                     <el-select v-model="form.region" placeholder="请选择">
                         <el-option label="未处理" value="shanghai" style="padding-left: 10px"></el-option>
-                        <el-option label="已处理" value="beijing" style="padding-left: 10px"></el-option>
+                        <el-option label="已处理" value="chuli" style="padding-left: 10px"></el-option>
                         <el-option label="已忽略" value="beijing" style="padding-left: 10px"></el-option>
                     </el-select>
                 </el-form-item>
